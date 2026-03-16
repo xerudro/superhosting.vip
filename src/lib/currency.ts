@@ -44,3 +44,12 @@ export function formatMoney(baseEur: number, currency: Currency) {
 		maximumFractionDigits: currency === 'RON' ? 0 : 2,
 	}).format(convertPrice(baseEur, currency));
 }
+
+/** Format a price that is already in the target currency — no conversion. */
+export function formatMoneyRaw(amount: number, currency: Currency) {
+	return new Intl.NumberFormat(localesByCurrency[currency], {
+		style: 'currency',
+		currency,
+		maximumFractionDigits: currency === 'RON' ? 0 : 2,
+	}).format(amount);
+}
