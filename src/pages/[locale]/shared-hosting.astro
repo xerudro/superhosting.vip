@@ -31,8 +31,8 @@ const [sharedPlans, managedPlans] = await Promise.all([
 			</div>
 		</div>
 	</section>
-	<FeatureGrid title="Shared hosting built for calm operations" description={content.shared.description} items={getServiceFeatures(locale).shared} />
-	<PricingCards title="Preset shared hosting tiers" description="Start from a clean baseline, then switch to custom requirements when needed." plans={sharedPlans} currency={currency} anchor="plans" />
-	<PricingCards title="Managed hosting plans" description={content.managed.description} plans={managedPlans} currency={currency} />
-	<Configurator id="configurator" title="Need a custom shared hosting quote?" description="Tune the core parameters and send the requirement summary to our team." type="shared-config" locale={locale} />
+	<FeatureGrid title={content.shared.featureTitle} description={content.shared.description} items={getServiceFeatures(locale).shared} />
+	<PricingCards title={content.shared.tiersTitle} description={content.shared.tiersDescription} plans={sharedPlans} currency={currency} anchor="plans" />
+	<PricingCards title={content.shared.managedTitle} description={content.managed.description} plans={managedPlans} currency={currency} />
+	<Configurator id="configurator" title={content.shared.configuratorTitle} description={content.shared.configuratorDescription} type="shared-config" locale={locale} />
 </Layout>
