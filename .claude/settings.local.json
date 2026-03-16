@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C D:WEBSITEsuperhosting.vip log --oneline -10)",
+      "Bash(git -C D:WEBSITEsuperhosting.vip branch -a)",
+      "Read(//d/WEBSITE/superhosting.vip/**)",
+      "Bash(git -C \"/d/WEBSITE/superhosting.vip\" log --oneline -10)",
+      "Bash(git -C \"/d/WEBSITE/superhosting.vip\" branch -a)",
+      "Bash(python3 -c \":*)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":4321\\\\|:3000\\\\|:4322\")",
+      "Bash(wmic process:*)",
+      "Bash(taskkill /PID 11004 /F)",
+      "Bash(taskkill /PID 24776 /F)",
+      "Bash(taskkill /PID 23076 /F)",
+      "Bash(taskkill /PID 24516 /F)",
+      "Bash(taskkill /PID 7632 /F)",
+      "Bash(taskkill /PID 24280 /F)",
+      "Bash(taskkill /PID 850 /F)",
+      "Bash(cmd /c \"taskkill /PID 24776 /F & taskkill /PID 11004 /F & taskkill /PID 23076 /F & taskkill /PID 24516 /F & taskkill /PID 7632 /F & taskkill /PID 24280 /F\")",
+      "Bash(cmd /c \"taskkill /PID 11004 /F 2>&1 & taskkill /PID 23076 /F 2>&1 & taskkill /PID 24776 /F 2>&1\")",
+      "Bash(powershell -Command \"Stop-Process -Id 11004,23076,24776,24516,7632,24280 -Force -ErrorAction SilentlyContinue; Write-Host ''done''\")",
+      "Bash(node -e \":*)",
+      "Bash(npm install:*)",
+      "Bash(find /d/WEBSITE/superhosting.vip/src/components -name *.astro)"
+    ]
+  }
+}
