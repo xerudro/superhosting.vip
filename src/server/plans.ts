@@ -29,21 +29,28 @@ function ctaLabel(locale: Locale, type: 'shared' | 'vps' | 'managed'): string {
 
 async function fetchByGroup(groupName: string): Promise<DbProduct[]> {
 	const pool = getPool();
-	if (!pool) return [];
+	if (!pool) {
+		console.warn('[plans] No DB pool — DATABASE_URL missing?');
+		return [];
+	}
 
-	const { rows } = await pool.query<DbProduct>(
-		`SELECT p.id, p.name, p.description, p.product_type, p.pricing, p.config_options, p.sort_order
-		 FROM products p
-		 JOIN product_groups pg ON p.product_group_id = pg.id
-		 WHERE pg.name = $1
-		   AND p.is_hidden  = false
-		   AND p.is_disabled = false
-		   AND p.is_retired  = false
-		 ORDER BY p.sort_order, p.name`,
-		[groupName],
-	);
-
-	return rows;
+	try {
+		const { rows } = await pool.query<DbProduct>(
+			`SELECT p.id, p.name, p.description, p.product_type, p.pricing, p.config_options, p.sort_order
+			 FROM products p
+			 JOIN product_groups pg ON p.product_group_id = pg.id
+			 WHERE pg.name = $1
+			   AND p.is_hidden  = false
+			   AND p.is_disabled = false
+			   AND p.is_retired  = false
+			 ORDER BY p.sort_order, p.name`,
+			[groupName],
+		);
+		return rows;
+	} catch (err) {
+		console.error('[plans] DB query failed for group', groupName, err);
+		return [];
+	}
 }
 
 export async function getSharedPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
