@@ -7,6 +7,7 @@ export type PricingPlan = {
 	name: string;
 	description: string;
 	priceEur: number;
+	priceCurrency?: import('@/lib/currency').Currency;
 	accent?: boolean;
 	cta: string;
 	features: readonly string[];
