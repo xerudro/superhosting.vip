@@ -21,104 +21,186 @@ const avatarInitials = user.fullName
 	.slice(0, 2)
 	.map((part) => part[0]?.toUpperCase() ?? '')
 	.join('') || 'VS';
+
+const labels = {
+	ro: {
+		profile: 'Detalii profil', fullName: 'Nume complet', company: 'Companie',
+		phone: 'Telefon', email: 'Email', locale: 'Limba', currency: 'Valuta',
+		save: 'Salveaza profilul', password: 'Schimba parola', currentPw: 'Parola curenta',
+		newPw: 'Parola noua', updatePw: 'Actualizeaza parola', avatar: 'Avatar',
+		uploadAvatar: 'Incarca avatar', uploadBtn: 'Incarca', avatarNote: 'Doar imagine, max. 1 MB.',
+		services: 'Servicii active', noServices: 'Niciun serviciu activ. Foloseste configuratoarele sau formularele de contact.',
+		panel: 'Panou control', webmail: 'Webmail', logout: 'Deconectare',
+		language: 'Limba', curr: 'Valuta', svc: 'Servicii',
+	},
+	en: {
+		profile: 'Profile details', fullName: 'Full name', company: 'Company',
+		phone: 'Phone', email: 'Email', locale: 'Locale', currency: 'Currency',
+		save: 'Save profile', password: 'Change password', currentPw: 'Current password',
+		newPw: 'New password', updatePw: 'Update password', avatar: 'Avatar',
+		uploadAvatar: 'Upload avatar', uploadBtn: 'Upload', avatarNote: 'Image only, max. 1 MB.',
+		services: 'Active services', noServices: 'No linked services. Use the configurators or contact forms to get started.',
+		panel: 'Control panel', webmail: 'Webmail', logout: 'Log out',
+		language: 'Language', curr: 'Currency', svc: 'Services',
+	},
+	de: {
+		profile: 'Profildetails', fullName: 'Vollstandiger Name', company: 'Unternehmen',
+		phone: 'Telefon', email: 'E-Mail', locale: 'Sprache', currency: 'Wahrung',
+		save: 'Profil speichern', password: 'Passwort andern', currentPw: 'Aktuelles Passwort',
+		newPw: 'Neues Passwort', updatePw: 'Passwort aktualisieren', avatar: 'Avatar',
+		uploadAvatar: 'Avatar hochladen', uploadBtn: 'Hochladen', avatarNote: 'Nur Bilder, max. 1 MB.',
+		services: 'Aktive Dienste', noServices: 'Keine Dienste verknupft. Nutze die Konfiguratoren oder Kontaktformulare.',
+		panel: 'Kontrollpanel', webmail: 'Webmail', logout: 'Abmelden',
+		language: 'Sprache', curr: 'Wahrung', svc: 'Dienste',
+	},
+}[locale];
 ---
 
 <Layout locale={locale} currency={currency} title={`${content.auth.accountTitle} | VIP Super Hosting`} description={content.home.description} path={Astro.url.pathname} user={user}>
 	<section class="section">
-		<div class="container account-grid">
-			<div class="stack">
-				<div class="account-card account-card--hero">
-					<div class="account-identity">
+		<div class="container account-layout">
+
+			<!-- ── Sidebar ──────────────────────────────────────── -->
+			<aside class="account-sidebar stack">
+
+				<!-- Identity card -->
+				<div class="account-card">
+					<div class="acct-identity">
 						{user.avatarDataUrl ? (
-							<img class="account-avatar" src={user.avatarDataUrl} alt={`Avatar for ${user.fullName}`} />
+							<img class="acct-avatar" src={user.avatarDataUrl} alt={user.fullName} />
 						) : (
-							<div class="account-avatar account-avatar--fallback" aria-label={`Avatar initials for ${user.fullName}`}>
-								{avatarInitials}
-							</div>
+							<div class="acct-avatar acct-avatar--fallback">{avatarInitials}</div>
 						)}
-						<div>
-							<p class="account-name">{user.fullName}</p>
-							<p style="font-size: 0.78rem; margin-top: 3px; color: var(--muted);">{user.email}</p>
+						<div class="acct-identity__text">
+							<strong class="acct-name">{user.fullName}</strong>
+							<span class="acct-email">{user.email}</span>
 						</div>
 					</div>
-					<div class="account-meta-grid">
-						<div class="summary-chip">
+
+					<div class="acct-meta">
+						<div class="acct-meta__item">
+							<span>{labels.language}</span>
 							<strong>{localeLabels[user.locale]}</strong>
-							<p>Language</p>
 						</div>
-						<div class="summary-chip">
+						<div class="acct-meta__item">
+							<span>{labels.curr}</span>
 							<strong>{user.currency}</strong>
-							<p>Currency</p>
 						</div>
-						<div class="summary-chip">
+						<div class="acct-meta__item">
+							<span>{labels.svc}</span>
 							<strong>{services.length}</strong>
-							<p>Services</p>
 						</div>
 					</div>
-					<div class="inline-actions">
-						<a class="button button--primary button--sm" href={brand.controlPanelUrl} target="_blank" rel="noreferrer">Control panel</a>
-						<a class="button button--secondary button--sm" href={brand.webmailUrl} target="_blank" rel="noreferrer">Webmail</a>
+
+					<div class="acct-actions">
+						<a class="button button--primary button--sm acct-btn" href={brand.controlPanelUrl} target="_blank" rel="noreferrer">{labels.panel}</a>
+						<a class="button button--secondary button--sm acct-btn" href={brand.webmailUrl} target="_blank" rel="noreferrer">{labels.webmail}</a>
+						<form method="post" action="/api/session/logout" style="margin-top: 4px;">
+							<input type="hidden" name="locale" value={locale} />
+							<button class="button button--ghost button--sm acct-btn" type="submit">{labels.logout}</button>
+						</form>
 					</div>
-					<form method="post" action="/api/session/logout">
-						<input type="hidden" name="locale" value={locale} />
-						<button class="button button--ghost button--sm" type="submit">Logout</button>
-					</form>
 				</div>
-				<div class="account-card stack">
-					<h3>Services overview</h3>
+
+				<!-- Services card -->
+				<div class="account-card">
+					<p class="acct-section-title">{labels.services}</p>
 					{services.length ? (
-						<ul class="account-services">
+						<ul class="account-services" style="margin-top: 14px;">
 							{services.map((service: { name: string; status: string; details: string }) => (
 								<li>
 									<span class="status-pill">{service.status}</span>
 									<strong>{service.name}</strong>
-									<p>{service.details}</p>
+									{service.details && <p>{service.details}</p>}
 								</li>
 							))}
 						</ul>
 					) : (
-						<p>No linked services yet. Use the public configurators and contact forms to create the first request.</p>
+						<p style="margin-top: 10px; font-size: 0.82rem;">{labels.noServices}</p>
 					)}
 				</div>
-			</div>
-			<div class="stack">
+
+			</aside>
+
+			<!-- ── Main content ──────────────────────────────────── -->
+			<div class="account-main stack">
 				{status && <div class="notice notice--success">{status.replaceAll('-', ' ')}</div>}
 				{error && <div class="notice notice--error">{error}</div>}
+
+				<!-- Profile form -->
 				<form class="account-card form-grid" method="post" action="/api/account/profile">
-					<h3>Profile details</h3>
+					<p class="acct-section-title">{labels.profile}</p>
 					<div class="form-grid form-grid--2">
-						<div class="field"><label for="profile-name">Full name</label><input class="input" id="profile-name" name="fullName" value={user.fullName} required /></div>
-						<div class="field"><label for="profile-company">Company</label><input class="input" id="profile-company" name="companyName" value={user.companyName} /></div>
-					</div>
-					<div class="form-grid form-grid--2">
-						<div class="field"><label for="profile-phone">Phone</label><input class="input" id="profile-phone" name="phone" value={user.phone} /></div>
-						<div class="field"><label for="profile-email">Email</label><input class="input" id="profile-email" value={user.email} disabled /></div>
+						<div class="field">
+							<label for="profile-name">{labels.fullName}</label>
+							<input class="input" id="profile-name" name="fullName" value={user.fullName} required />
+						</div>
+						<div class="field">
+							<label for="profile-company">{labels.company}</label>
+							<input class="input" id="profile-company" name="companyName" value={user.companyName} />
+						</div>
 					</div>
 					<div class="form-grid form-grid--2">
 						<div class="field">
-							<label for="profile-locale">Locale</label>
-							<select class="select" id="profile-locale" name="locale">{locales.map((item) => <option value={item} selected={item === user.locale}>{localeLabels[item]}</option>)}</select>
+							<label for="profile-phone">{labels.phone}</label>
+							<input class="input" id="profile-phone" name="phone" value={user.phone} />
 						</div>
 						<div class="field">
-							<label for="profile-currency">Currency</label>
-							<select class="select" id="profile-currency" name="currency">{currencies.map((item) => <option value={item} selected={item === user.currency}>{item}</option>)}</select>
+							<label for="profile-email">{labels.email}</label>
+							<input class="input" id="profile-email" value={user.email} disabled />
 						</div>
 					</div>
-					<button class="button button--primary button--sm" type="submit">Save profile</button>
+					<div class="form-grid form-grid--2">
+						<div class="field">
+							<label for="profile-locale">{labels.locale}</label>
+							<select class="select" id="profile-locale" name="locale">
+								{locales.map((item) => <option value={item} selected={item === user.locale}>{localeLabels[item]}</option>)}
+							</select>
+						</div>
+						<div class="field">
+							<label for="profile-currency">{labels.currency}</label>
+							<select class="select" id="profile-currency" name="currency">
+								{currencies.map((item) => <option value={item} selected={item === user.currency}>{item}</option>)}
+							</select>
+						</div>
+					</div>
+					<div>
+						<button class="button button--primary button--sm" type="submit">{labels.save}</button>
+					</div>
 				</form>
+
+				<!-- Password form -->
 				<form class="account-card form-grid" method="post" action="/api/account/password">
-					<h3>Change password</h3>
-					<div class="field"><label for="current-password">Current password</label><input class="input" id="current-password" type="password" name="currentPassword" required minlength="8" /></div>
-					<div class="field"><label for="new-password">New password</label><input class="input" id="new-password" type="password" name="newPassword" required minlength="8" /></div>
-					<button class="button button--secondary button--sm" type="submit">Update password</button>
+					<p class="acct-section-title">{labels.password}</p>
+					<div class="form-grid form-grid--2">
+						<div class="field">
+							<label for="current-password">{labels.currentPw}</label>
+							<input class="input" id="current-password" type="password" name="currentPassword" required minlength="8" />
+						</div>
+						<div class="field">
+							<label for="new-password">{labels.newPw}</label>
+							<input class="input" id="new-password" type="password" name="newPassword" required minlength="8" />
+						</div>
+					</div>
+					<div>
+						<button class="button button--secondary button--sm" type="submit">{labels.updatePw}</button>
+					</div>
 				</form>
+
+				<!-- Avatar form -->
 				<form class="account-card form-grid" method="post" action="/api/account/avatar" enctype="multipart/form-data">
-					<h3>Avatar</h3>
-					<div class="field"><label for="avatar-file">Upload avatar</label><input class="input" id="avatar-file" type="file" name="avatar" accept="image/*" required /></div>
-					<p>Image only, maximum 1 MB.</p>
-					<button class="button button--secondary button--sm" type="submit">Upload avatar</button>
+					<p class="acct-section-title">{labels.avatar}</p>
+					<div class="field">
+						<label for="avatar-file">{labels.uploadAvatar}</label>
+						<input class="input" id="avatar-file" type="file" name="avatar" accept="image/*" required />
+					</div>
+					<p style="font-size: 0.78rem; color: var(--muted);">{labels.avatarNote}</p>
+					<div>
+						<button class="button button--secondary button--sm" type="submit">{labels.uploadBtn}</button>
+					</div>
 				</form>
 			</div>
+
 		</div>
 	</section>
 </Layout>
