@@ -18,11 +18,13 @@
     "@fontsource/manrope": "^5.2.8",
     "@fontsource/sora": "^5.2.8",
     "astro": "^6.0.4",
+    "bcryptjs": "^3.0.3",
     "pg": "^8.20.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.7",
+    "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.18.0",
     "typescript": "^5.9.3"
   }

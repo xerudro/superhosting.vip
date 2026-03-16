@@ -1,4 +1,5 @@
-import { createHash, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import bcrypt from 'bcryptjs';
 import type { APIContext, AstroCookies } from 'astro';
 import { z } from 'zod';
 import type { Currency } from '@/lib/currency';
@@ -58,19 +59,12 @@ function getSessionTtlMs() {
 }
 
 export function hashPassword(password: string) {
-	const salt = randomBytes(16).toString('hex');
-	const derived = scryptSync(password, salt, 64).toString('hex');
-	return `${salt}:${derived}`;
+	return bcrypt.hashSync(password, 12);
 }
 
 function verifyPassword(password: string, storedHash: string) {
-	const [salt, key] = storedHash.split(':');
-	if (!salt || !key) {
-		return false;
-	}
-	const hashedBuffer = scryptSync(password, salt, 64);
-	const keyBuffer = Buffer.from(key, 'hex');
-	return timingSafeEqual(hashedBuffer, keyBuffer);
+	if (!storedHash) return false;
+	return bcrypt.compareSync(password, storedHash);
 }
 
 function hashToken(token: string) {
