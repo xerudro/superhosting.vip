@@ -4,42 +4,63 @@ import { withLocale } from '@/lib/i18n';
 
 const { locale } = Astro.props as { locale: import('@/lib/i18n').Locale };
 const content = getPageContent(locale);
+
+const year = new Date().getFullYear();
+
+const labels = {
+	ro: { contact: 'Contact', links: 'Linkuri utile', legal: 'Legal', panel: 'Panou control', webmail: 'Webmail', copy: 'Toate drepturile rezervate.' },
+	en: { contact: 'Contact', links: 'Useful links', legal: 'Legal', panel: 'Control panel', webmail: 'Webmail', copy: 'All rights reserved.' },
+	de: { contact: 'Kontakt', links: 'Nutzliche Links', legal: 'Rechtliches', panel: 'Kontrollpanel', webmail: 'Webmail', copy: 'Alle Rechte vorbehalten.' },
+}[locale];
 ---
 
 <footer class="footer">
 	<div class="container">
-		<div class="footer__shell panel">
+		<div class="footer__shell">
 			<div class="stack">
-				<div class="eyebrow">{brand.name}</div>
-				<h3>{content.contact.title}</h3>
-				<p>{content.contact.description}</p>
+				<div class="footer__brand">
+					<span class="nav__mark">VIP</span>
+					<div class="nav__brand-copy">
+						<strong>{brand.name}</strong>
+						<small>{brand.domain}</small>
+					</div>
+				</div>
+				<p style="max-width: 42ch;">{content.contact.description}</p>
 				<div class="footer__meta">
-					<span>Hosting</span>
+					<span>Shared Hosting</span>
 					<span>VPS</span>
-					<span>Server administration</span>
-					<span>Web design</span>
+					<span>Server Administration</span>
+					<span>Web Design</span>
 				</div>
 				<div class="inline-actions">
 					<a class="button button--primary" href={withLocale(locale, '/contact')}>Contact</a>
-					<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer">Webmail</a>
+					<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer">{labels.webmail}</a>
 				</div>
 			</div>
-			<div class="grid-2">
-				<div class="card">
-					<h3>Contact</h3>
-					<p>{brand.email}</p>
-					<p>{brand.phone}</p>
-					<p>{brand.location}</p>
+
+			<div class="footer__cols">
+				<div class="footer__col">
+					<h4>{labels.contact}</h4>
+					<nav class="footer__links">
+						<a href={`mailto:${brand.email}`}>{brand.email}</a>
+						<a href={`tel:${brand.phone.replace(/\s/g, '')}`}>{brand.phone}</a>
+						<span style="color: var(--muted); font-size: 0.85rem;">{brand.location}</span>
+					</nav>
 				</div>
-				<div class="card">
-					<h3>Links</h3>
-					<ul class="list-clean">
-						<li><a href={withLocale(locale, '/legal')}>Legal</a></li>
-						<li><a href={brand.controlPanelUrl} target="_blank" rel="noreferrer">Control panel</a></li>
-						<li><a href={brand.webmailUrl} target="_blank" rel="noreferrer">Webmail</a></li>
-					</ul>
+				<div class="footer__col">
+					<h4>{labels.links}</h4>
+					<nav class="footer__links">
+						<a href={withLocale(locale, '/legal')}>{labels.legal}</a>
+						<a href={brand.controlPanelUrl} target="_blank" rel="noreferrer">{labels.panel}</a>
+						<a href={brand.webmailUrl} target="_blank" rel="noreferrer">{labels.webmail}</a>
+					</nav>
 				</div>
 			</div>
+		</div>
+
+		<div class="footer__copy">
+			<span>&copy; {year} {brand.name}. {labels.copy}</span>
+			<a href={withLocale(locale, '/legal')} style="color: var(--muted-light);">{labels.legal}</a>
 		</div>
 	</div>
 </footer>
