@@ -5,6 +5,7 @@
 @import '@fontsource/manrope/700.css';
 
 :root {
+	/* ── Dark theme (default) ── */
 	--bg:            #0b0d11;
 	--bg-alt:        #0f1218;
 	--surface:       #141820;
@@ -27,6 +28,27 @@
 	/* Wide container: works well on 1440–1920px screens */
 	--container:     min(1560px, calc(100vw - 64px));
 	--shadow:        0 1px 3px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.35);
+}
+
+/* ── Light theme ── */
+[data-theme="light"] {
+	--bg:            #f4f6fb;
+	--bg-alt:        #eaecf4;
+	--surface:       #ffffff;
+	--surface-alt:   #f0f3fa;
+	--surface-hover: #e6eaf4;
+	--border:        rgba(0, 0, 0, 0.08);
+	--border-strong: rgba(0, 0, 0, 0.15);
+	--text:          #111827;
+	--muted:         #8b95a3;
+	--muted-light:   #6b7480;
+	--accent:        #f97316;
+	--accent-hover:  #ea6c08;
+	--accent-muted:  rgba(249, 115, 22, 0.08);
+	--accent-border: rgba(249, 115, 22, 0.30);
+	--success:       #16a34a;
+	--error:         #dc2626;
+	--shadow:        0 1px 3px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.10);
 }
 
 *,
@@ -1035,6 +1057,45 @@ button.button {
 	border-color: var(--border-strong);
 }
 
+/* Theme toggle */
+.theme-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: var(--radius-md);
+	background: transparent;
+	border: 1px solid var(--border-strong);
+	color: var(--muted-light);
+	cursor: pointer;
+	transition: background 130ms ease, color 130ms ease, border-color 130ms ease;
+	flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+	background: var(--surface-alt);
+	color: var(--text);
+	border-color: var(--border-strong);
+}
+
+.theme-toggle svg {
+	width: 15px;
+	height: 15px;
+	pointer-events: none;
+}
+
+/* show correct icon per theme */
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+[data-theme="light"] .theme-toggle .icon-sun  { display: block; }
+[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+/* light mode: button--secondary border needs slight adjustment */
+[data-theme="light"] .button--secondary:hover {
+	border-color: rgba(0,0,0,0.20);
+}
+
 /* Separator in nav */
 .nav__sep {
 	width: 1px;
@@ -1316,11 +1377,19 @@ input[type='file'].input::file-selector-button:hover {
 	}
 }
 
-/* 1200px — hero layout tightens + hide nav brand text */
+/* 1200px — hero single-col, 2-col grid-3, hide nav brand text */
 @media (max-width: 1200px) {
 	.hero__shell {
-		grid-template-columns: 1fr 300px;
-		gap: 40px;
+		grid-template-columns: 1fr;
+		gap: 28px;
+	}
+
+	.hero__aside {
+		max-width: 480px;
+	}
+
+	.grid-3 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.nav__brand-copy {
@@ -1328,27 +1397,14 @@ input[type='file'].input::file-selector-button:hover {
 	}
 }
 
-/* 1024px — single-col hero, tighter account layout, 2-col grid-3 */
+/* 1024px — tighter account layout, stack footer */
 @media (max-width: 1024px) {
-	.hero__shell {
-		grid-template-columns: 1fr;
-		gap: 28px;
-	}
-
-	.hero__aside {
-		max-width: 460px;
-	}
-
 	.account-layout {
 		grid-template-columns: 210px 1fr;
 	}
 
 	.account-sidebar {
 		position: static;
-	}
-
-	.grid-3 {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.footer__shell {

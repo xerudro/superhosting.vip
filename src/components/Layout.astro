@@ -42,6 +42,15 @@ const seo = createSeo(locale, path, title, description);
 		<link rel="alternate" hreflang="en" href={seo.languages.en} />
 		<link rel="alternate" hreflang="de" href={seo.languages.de} />
 		<title>{title}</title>
+	<!-- Anti-flash: apply saved theme before first paint -->
+	<script is:inline>
+		(function() {
+			try {
+				var t = localStorage.getItem('vip-theme');
+				if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+			} catch(e) {}
+		})();
+	</script>
 	</head>
 	<body>
 		<Header locale={locale} currency={currency} pathname={path} user={user} />
