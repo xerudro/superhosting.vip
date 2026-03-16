@@ -1,0 +1,45 @@
+---
+import { brand, getPageContent } from '@/lib/site';
+import { withLocale } from '@/lib/i18n';
+
+const { locale } = Astro.props as { locale: import('@/lib/i18n').Locale };
+const content = getPageContent(locale);
+---
+
+<footer class="footer">
+	<div class="container">
+		<div class="footer__shell panel">
+			<div class="stack">
+				<div class="eyebrow">{brand.name}</div>
+				<h3>{content.contact.title}</h3>
+				<p>{content.contact.description}</p>
+				<div class="footer__meta">
+					<span>Hosting</span>
+					<span>VPS</span>
+					<span>Server administration</span>
+					<span>Web design</span>
+				</div>
+				<div class="inline-actions">
+					<a class="button button--primary" href={withLocale(locale, '/contact')}>Contact</a>
+					<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer">Webmail</a>
+				</div>
+			</div>
+			<div class="grid-2">
+				<div class="card">
+					<h3>Contact</h3>
+					<p>{brand.email}</p>
+					<p>{brand.phone}</p>
+					<p>{brand.location}</p>
+				</div>
+				<div class="card">
+					<h3>Links</h3>
+					<ul class="list-clean">
+						<li><a href={withLocale(locale, '/legal')}>Legal</a></li>
+						<li><a href={brand.controlPanelUrl} target="_blank" rel="noreferrer">Control panel</a></li>
+						<li><a href={brand.webmailUrl} target="_blank" rel="noreferrer">Webmail</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

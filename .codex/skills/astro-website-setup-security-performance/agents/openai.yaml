@@ -1,0 +1,4 @@
+interface:
+  display_name: "Astro Website Setup, Security, and Performance"
+  short_description: "Astro setup, security, and perf workflow"
+  default_prompt: "Use $astro-website-setup-security-performance to audit or prepare this Astro site for secure, high-performance deployment."

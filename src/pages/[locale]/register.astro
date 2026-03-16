@@ -1,0 +1,47 @@
+---
+import Layout from '@/components/Layout.astro';
+import { currencies } from '@/lib/currency';
+import { localeLabels, locales, normalizeLocale } from '@/lib/i18n';
+import { getPageContent } from '@/lib/site';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+const error = Astro.url.searchParams.get('error');
+---
+
+<Layout locale={locale} currency={currency} title={`${content.auth.registerTitle} | VIP Super Hosting`} description={content.home.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section">
+		<div class="container split">
+			<div class="card stack">
+				<span class="eyebrow">Account</span>
+				<h1>{content.auth.registerTitle}</h1>
+				<p>Create the public account layer used for service requests, profile data and quick access toward the control panel and webmail.</p>
+			</div>
+			<form class="card form-grid" method="post" action="/api/session/register">
+				<input type="hidden" name="locale" value={locale} />
+				{error && <div class="notice notice--error">{error}</div>}
+				<div class="form-grid form-grid--2">
+					<div class="field"><label for="register-name">Full name</label><input class="input" id="register-name" name="fullName" required /></div>
+					<div class="field"><label for="register-email">Email</label><input class="input" id="register-email" name="email" type="email" required /></div>
+				</div>
+				<div class="form-grid form-grid--2">
+					<div class="field"><label for="register-company">Company</label><input class="input" id="register-company" name="companyName" /></div>
+					<div class="field"><label for="register-phone">Phone</label><input class="input" id="register-phone" name="phone" /></div>
+				</div>
+				<div class="form-grid form-grid--2">
+					<div class="field">
+						<label for="register-locale">Locale</label>
+						<select class="select" id="register-locale" name="locale">{locales.map((item) => <option value={item} selected={item === locale}>{localeLabels[item]}</option>)}</select>
+					</div>
+					<div class="field">
+						<label for="register-currency">Currency</label>
+						<select class="select" id="register-currency" name="currency">{currencies.map((item) => <option value={item} selected={item === currency}>{item}</option>)}</select>
+					</div>
+				</div>
+				<div class="field"><label for="register-password">Password</label><input class="input" id="register-password" name="password" type="password" required minlength="8" /></div>
+				<button class="button button--primary" type="submit">Create account</button>
+			</form>
+		</div>
+	</section>
+</Layout>

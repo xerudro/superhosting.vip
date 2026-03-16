@@ -1,0 +1,40 @@
+---
+import Layout from '@/components/Layout.astro';
+import { getPageContent } from '@/lib/site';
+import { normalizeLocale } from '@/lib/i18n';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+const status = Astro.url.searchParams.get('status');
+const error = Astro.url.searchParams.get('error');
+---
+
+<Layout locale={locale} currency={currency} title={`${content.contact.title} | VIP Super Hosting`} description={content.contact.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section">
+		<div class="container split">
+			<div class="card stack">
+				<span class="eyebrow">Contact</span>
+				<h1>{content.contact.title}</h1>
+				<p>{content.contact.description}</p>
+				<div class="summary-strip">
+					<div class="summary-chip"><strong>Sales</strong><p>Hosting and project discovery</p></div>
+					<div class="summary-chip"><strong>Tech</strong><p>Architecture and maintenance alignment</p></div>
+					<div class="summary-chip"><strong>Design</strong><p>Conversion-focused presentation sites</p></div>
+				</div>
+			</div>
+			<form class="card form-grid" method="post" action="/api/leads/request">
+				<input type="hidden" name="type" value="contact" />
+				{status && <div class="notice notice--success">Request saved. We will follow up shortly.</div>}
+				{error && <div class="notice notice--error">{error}</div>}
+				<div class="form-grid form-grid--2">
+					<div class="field"><label for="contact-name">Name</label><input class="input" id="contact-name" name="name" required /></div>
+					<div class="field"><label for="contact-email">Email</label><input class="input" id="contact-email" type="email" name="email" required /></div>
+				</div>
+				<div class="field"><label for="contact-company">Company</label><input class="input" id="contact-company" name="company" /></div>
+				<div class="field"><label for="contact-message">Message</label><textarea class="textarea" id="contact-message" name="message" required></textarea></div>
+				<button class="button button--primary" type="submit">Send request</button>
+			</form>
+		</div>
+	</section>
+</Layout>

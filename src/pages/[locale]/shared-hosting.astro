@@ -1,0 +1,32 @@
+---
+import Configurator from '@/components/Configurator.astro';
+import FeatureGrid from '@/components/FeatureGrid.astro';
+import Layout from '@/components/Layout.astro';
+import PricingCards from '@/components/PricingCards.astro';
+import { getPageContent, getServiceFeatures, getSharedPlans } from '@/lib/site';
+import { normalizeLocale } from '@/lib/i18n';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+---
+
+<Layout locale={locale} currency={currency} title={`${content.shared.title} | VIP Super Hosting`} description={content.shared.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section hero">
+		<div class="container split">
+			<div class="card stack">
+				<span class="eyebrow">Shared Hosting</span>
+				<h1>{content.shared.title}</h1>
+				<p>{content.shared.description}</p>
+			</div>
+			<div class="card">
+				<ul class="list-clean">
+					{content.shared.highlights.map((item: string) => <li>{item}</li>)}
+				</ul>
+			</div>
+		</div>
+	</section>
+	<FeatureGrid title="Shared hosting built for calm operations" description={content.shared.description} items={getServiceFeatures(locale).shared} />
+	<PricingCards title="Preset shared hosting tiers" description="Start from a clean baseline, then switch to custom requirements when needed." plans={getSharedPlans(locale)} currency={currency} anchor="plans" />
+	<Configurator id="configurator" title="Need a custom shared hosting quote?" description="Tune the core parameters and send the requirement summary to our team." type="shared-config" locale={locale} />
+</Layout>

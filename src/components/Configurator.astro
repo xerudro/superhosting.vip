@@ -1,0 +1,123 @@
+---
+const {
+	id,
+	title,
+	description,
+	type,
+	locale,
+} = Astro.props as {
+	id: string;
+	title: string;
+	description: string;
+	type: 'shared-config' | 'vps-config';
+	locale: import('@/lib/i18n').Locale;
+};
+
+const labels = {
+	ro: {
+		name: 'Nume',
+		email: 'Email',
+		company: 'Companie',
+		managed: 'Managed',
+		yes: 'Da',
+		no: 'Nu',
+		cpu: 'vCPU',
+		ram: 'RAM (GB)',
+		storage: 'Storage (GB)',
+		websites: 'Website-uri',
+		message: 'Context proiect',
+		send: 'Trimite cererea',
+	},
+	en: {
+		name: 'Name',
+		email: 'Email',
+		company: 'Company',
+		managed: 'Managed',
+		yes: 'Yes',
+		no: 'No',
+		cpu: 'vCPU',
+		ram: 'RAM (GB)',
+		storage: 'Storage (GB)',
+		websites: 'Websites',
+		message: 'Project context',
+		send: 'Send request',
+	},
+	de: {
+		name: 'Name',
+		email: 'E-Mail',
+		company: 'Unternehmen',
+		managed: 'Managed',
+		yes: 'Ja',
+		no: 'Nein',
+		cpu: 'vCPU',
+		ram: 'RAM (GB)',
+		storage: 'Storage (GB)',
+		websites: 'Websites',
+		message: 'Projektkontext',
+		send: 'Anfrage senden',
+	},
+}[locale];
+---
+
+<section class="section" id={id}>
+	<div class="container split">
+		<div class="card">
+			<div class="section-head" style="margin-bottom: 20px;">
+				<span class="eyebrow">Configurator</span>
+				<h2>{title}</h2>
+				<p>{description}</p>
+			</div>
+			<div class="summary-strip">
+				<div class="summary-chip"><strong>{type === 'shared-config' ? 'Shared' : 'VPS'}</strong><p>Preset + live configuration</p></div>
+				<div class="summary-chip"><strong>Managed</strong><p>Optional operations layer</p></div>
+				<div class="summary-chip"><strong>Quote</strong><p>Stored as commercial request</p></div>
+			</div>
+		</div>
+		<form class="card form-grid" method="post" action="/api/leads/request">
+			<input type="hidden" name="type" value={type} />
+			<input type="hidden" name="summary" value="" data-summary-target />
+			<div class="form-grid form-grid--2">
+				<div class="field"><label for={`${id}-name`}>{labels.name}</label><input class="input" id={`${id}-name`} name="name" required /></div>
+				<div class="field"><label for={`${id}-email`}>{labels.email}</label><input class="input" type="email" id={`${id}-email`} name="email" required /></div>
+			</div>
+			<div class="form-grid form-grid--2">
+				<div class="field"><label for={`${id}-company`}>{labels.company}</label><input class="input" id={`${id}-company`} name="company" /></div>
+				<div class="field">
+					<label for={`${id}-managed`}>{labels.managed}</label>
+					<select class="select" id={`${id}-managed`} name="managed">
+						<option value="yes">{labels.yes}</option>
+						<option value="no">{labels.no}</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-grid form-grid--2">
+				<div class="field"><label for={`${id}-cpu`}>{labels.cpu}</label><input class="input" type="number" id={`${id}-cpu`} name="cpu" min="1" value={type === 'shared-config' ? 1 : 2} /></div>
+				<div class="field"><label for={`${id}-ram`}>{labels.ram}</label><input class="input" type="number" id={`${id}-ram`} name="ram" min="1" value={type === 'shared-config' ? 2 : 4} /></div>
+			</div>
+			<div class="form-grid form-grid--2">
+				<div class="field"><label for={`${id}-storage`}>{labels.storage}</label><input class="input" type="number" id={`${id}-storage`} name="storage" min="10" value={type === 'shared-config' ? 20 : 80} /></div>
+				<div class="field"><label for={`${id}-websites`}>{labels.websites}</label><input class="input" type="number" id={`${id}-websites`} name="websites" min="1" value={type === 'shared-config' ? 1 : 3} /></div>
+			</div>
+			<div class="field"><label for={`${id}-message`}>{labels.message}</label><textarea class="textarea" id={`${id}-message`} name="message" required></textarea></div>
+			<button class="button button--primary" type="submit">{labels.send}</button>
+		</form>
+	</div>
+</section>
+
+<script is:inline define:vars={{ id }}>
+	const targetForm = document.querySelector(`#${id} form`);
+	if (targetForm) {
+		targetForm.addEventListener('submit', () => {
+			const data = new FormData(targetForm);
+			const summary = [
+				`managed=${data.get('managed')}`,
+				`cpu=${data.get('cpu')}`,
+				`ram=${data.get('ram')}`,
+				`storage=${data.get('storage')}`,
+				`websites=${data.get('websites')}`,
+			].join(', ');
+			const summaryField = targetForm.querySelector('[data-summary-target]');
+			if (summaryField) summaryField.value = summary;
+		});
+	}
+</script>

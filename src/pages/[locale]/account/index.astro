@@ -1,0 +1,126 @@
+---
+import Layout from '@/components/Layout.astro';
+import { currencies } from '@/lib/currency';
+import { localeLabels, locales, normalizeLocale } from '@/lib/i18n';
+import { brand, getPageContent } from '@/lib/site';
+import { getServiceSummary } from '@/server/auth';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+const user = Astro.locals.user;
+if (!user) {
+	return Astro.redirect(`/${locale}/login`);
+}
+const services = await getServiceSummary(user.id);
+const status = Astro.url.searchParams.get('status');
+const error = Astro.url.searchParams.get('error');
+const avatarInitials = user.fullName
+	.split(/\s+/)
+	.filter(Boolean)
+	.slice(0, 2)
+	.map((part) => part[0]?.toUpperCase() ?? '')
+	.join('') || 'VS';
+---
+
+<Layout locale={locale} currency={currency} title={`${content.auth.accountTitle} | VIP Super Hosting`} description={content.home.description} path={Astro.url.pathname} user={user}>
+	<section class="section">
+		<div class="container account-grid">
+			<div class="stack">
+				<div class="account-card account-card--hero">
+					<span class="eyebrow">Account</span>
+					<div class="account-identity">
+						{user.avatarDataUrl ? (
+							<img class="account-avatar" src={user.avatarDataUrl} alt={`Avatar for ${user.fullName}`} />
+						) : (
+							<div class="account-avatar account-avatar--fallback" aria-label={`Avatar initials for ${user.fullName}`}>
+								{avatarInitials}
+							</div>
+						)}
+						<div class="stack">
+							<h1>{content.auth.accountTitle}</h1>
+							<p class="account-name">{user.fullName}</p>
+							<p>{user.email}</p>
+						</div>
+					</div>
+					<div class="account-meta-grid">
+						<div class="summary-chip">
+							<strong>{localeLabels[user.locale]}</strong>
+							<p>Language</p>
+						</div>
+						<div class="summary-chip">
+							<strong>{user.currency}</strong>
+							<p>Currency</p>
+						</div>
+						<div class="summary-chip">
+							<strong>{services.length}</strong>
+							<p>Linked services</p>
+						</div>
+					</div>
+					<div class="inline-actions">
+						<a class="button button--primary" href={brand.controlPanelUrl} target="_blank" rel="noreferrer">Open control panel</a>
+						<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer">Open webmail</a>
+					</div>
+					<form method="post" action="/api/session/logout">
+						<input type="hidden" name="locale" value={locale} />
+						<button class="button button--secondary" type="submit">Logout</button>
+					</form>
+				</div>
+				<div class="account-card stack">
+					<h3>Services overview</h3>
+					{services.length ? (
+						<ul class="account-services">
+							{services.map((service: { name: string; status: string; details: string }) => (
+								<li>
+									<span class="status-pill">{service.status}</span>
+									<strong>{service.name}</strong>
+									<p>{service.details}</p>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p>No linked services yet. Use the public configurators and contact forms to create the first request.</p>
+					)}
+				</div>
+			</div>
+			<div class="stack">
+				{status && <div class="notice notice--success">{status.replaceAll('-', ' ')}</div>}
+				{error && <div class="notice notice--error">{error}</div>}
+				<form class="account-card form-grid" method="post" action="/api/account/profile">
+					<h3>Profile details</h3>
+					<div class="form-grid form-grid--2">
+						<div class="field"><label for="profile-name">Full name</label><input class="input" id="profile-name" name="fullName" value={user.fullName} required /></div>
+						<div class="field"><label for="profile-company">Company</label><input class="input" id="profile-company" name="companyName" value={user.companyName} /></div>
+					</div>
+					<div class="form-grid form-grid--2">
+						<div class="field"><label for="profile-phone">Phone</label><input class="input" id="profile-phone" name="phone" value={user.phone} /></div>
+						<div class="field"><label for="profile-email">Email</label><input class="input" id="profile-email" value={user.email} disabled /></div>
+					</div>
+					<div class="form-grid form-grid--2">
+						<div class="field">
+							<label for="profile-locale">Locale</label>
+							<select class="select" id="profile-locale" name="locale">{locales.map((item) => <option value={item} selected={item === user.locale}>{localeLabels[item]}</option>)}</select>
+						</div>
+						<div class="field">
+							<label for="profile-currency">Currency</label>
+							<select class="select" id="profile-currency" name="currency">{currencies.map((item) => <option value={item} selected={item === user.currency}>{item}</option>)}</select>
+						</div>
+					</div>
+					<button class="button button--primary" type="submit">Save profile</button>
+				</form>
+				<form class="account-card form-grid" method="post" action="/api/account/password">
+					<h3>Change password</h3>
+					<div class="field"><label for="current-password">Current password</label><input class="input" id="current-password" type="password" name="currentPassword" required minlength="8" /></div>
+					<div class="field"><label for="new-password">New password</label><input class="input" id="new-password" type="password" name="newPassword" required minlength="8" /></div>
+					<button class="button button--secondary" type="submit">Update password</button>
+				</form>
+				<form class="account-card form-grid" method="post" action="/api/account/avatar" enctype="multipart/form-data">
+					<h3>Avatar</h3>
+					<div class="field"><label for="avatar-file">Upload avatar</label><input class="input" id="avatar-file" type="file" name="avatar" accept="image/*" required /></div>
+					<p>Image only, maximum 1 MB.</p>
+					<button class="button button--secondary" type="submit">Upload avatar</button>
+				</form>
+			</div>
+		</div>
+	</section>
+</Layout>

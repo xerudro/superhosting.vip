@@ -1,0 +1,32 @@
+---
+import Configurator from '@/components/Configurator.astro';
+import FeatureGrid from '@/components/FeatureGrid.astro';
+import Layout from '@/components/Layout.astro';
+import PricingCards from '@/components/PricingCards.astro';
+import { getPageContent, getServiceFeatures, getVpsPlans } from '@/lib/site';
+import { normalizeLocale } from '@/lib/i18n';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+---
+
+<Layout locale={locale} currency={currency} title={`${content.vps.title} | VIP Super Hosting`} description={content.vps.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section hero">
+		<div class="container split">
+			<div class="card stack">
+				<span class="eyebrow">VPS Hosting</span>
+				<h1>{content.vps.title}</h1>
+				<p>{content.vps.description}</p>
+			</div>
+			<div class="card">
+				<ul class="list-clean">
+					{content.vps.highlights.map((item: string) => <li>{item}</li>)}
+				</ul>
+			</div>
+		</div>
+	</section>
+	<FeatureGrid title="Control and flexibility without public provider noise" description={content.vps.description} items={getServiceFeatures(locale).vps} />
+	<PricingCards title="Preset VPS tiers" description="Build from proven starting points, then request a tuned quote for your workload." plans={getVpsPlans(locale)} currency={currency} anchor="plans" />
+	<Configurator id="configurator" title="Build a tailored VPS request" description="Adjust the technical parameters and send the request summary for review." type="vps-config" locale={locale} />
+</Layout>

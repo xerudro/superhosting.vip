@@ -1,0 +1,25 @@
+---
+import FeatureGrid from '@/components/FeatureGrid.astro';
+import Layout from '@/components/Layout.astro';
+import { getPageContent, getServiceFeatures } from '@/lib/site';
+import { normalizeLocale, withLocale } from '@/lib/i18n';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+---
+
+<Layout locale={locale} currency={currency} title={`${content.design.title} | VIP Super Hosting`} description={content.design.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section">
+		<div class="container card stack">
+			<span class="eyebrow">Web Design</span>
+			<h1>{content.design.title}</h1>
+			<p>{content.design.description}</p>
+			<div class="inline-actions">
+				<a class="button button--primary" href={withLocale(locale, '/contact')}>Start project</a>
+				<a class="button button--secondary" href={withLocale(locale, '/shared-hosting')}>Hosting + design</a>
+			</div>
+		</div>
+	</section>
+	<FeatureGrid title="Design with technical discipline" description="A presentation site is still infrastructure. The visual system, content structure and performance budget move together." items={getServiceFeatures(locale).design} />
+</Layout>

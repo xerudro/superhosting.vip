@@ -1,0 +1,35 @@
+---
+import Layout from '@/components/Layout.astro';
+import { normalizeLocale, withLocale } from '@/lib/i18n';
+import { getPageContent } from '@/lib/site';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+const error = Astro.url.searchParams.get('error');
+const status = Astro.url.searchParams.get('status');
+---
+
+<Layout locale={locale} currency={currency} title={`${content.auth.loginTitle} | VIP Super Hosting`} description={content.home.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section">
+		<div class="container split">
+			<div class="card stack">
+				<span class="eyebrow">Account</span>
+				<h1>{content.auth.loginTitle}</h1>
+				<p>Access your public account layer, then continue toward the control panel or webmail.</p>
+				<div class="inline-actions">
+					<a class="button button--secondary" href={withLocale(locale, '/register')}>{content.auth.registerTitle}</a>
+					<a class="button button--secondary" href={withLocale(locale, '/forgot-password')}>Reset password</a>
+				</div>
+			</div>
+			<form class="card form-grid" method="post" action="/api/session/login">
+				<input type="hidden" name="locale" value={locale} />
+				{status && <div class="notice notice--success">{status === 'logged-out' ? 'You are now logged out.' : 'Status updated.'}</div>}
+				{error && <div class="notice notice--error">{error === 'auth' ? 'Please sign in to access your account.' : error}</div>}
+				<div class="field"><label for="login-email">Email</label><input class="input" id="login-email" type="email" name="email" required /></div>
+				<div class="field"><label for="login-password">Password</label><input class="input" id="login-password" type="password" name="password" required /></div>
+				<button class="button button--primary" type="submit">Login</button>
+			</form>
+		</div>
+	</section>
+</Layout>

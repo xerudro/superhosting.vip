@@ -1,0 +1,36 @@
+---
+const { title, description, rows } = Astro.props as {
+	title: string;
+	description: string;
+	rows: import('@/lib/site').ComparisonRow[];
+};
+---
+
+<section class="section section--tight">
+	<div class="container">
+		<div class="section-head">
+			<h2>{title}</h2>
+			<p>{description}</p>
+		</div>
+		<div class="table-card">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Capability</th>
+						<th>Shared Hosting</th>
+						<th>VPS Hosting</th>
+					</tr>
+				</thead>
+				<tbody>
+					{rows.map((row) => (
+						<tr>
+							<td>{row.label}</td>
+							<td>{row.shared}</td>
+							<td>{row.vps}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>

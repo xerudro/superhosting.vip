@@ -1,0 +1,51 @@
+---
+import '@/styles/global.css';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import { createSeo } from '@/lib/seo';
+
+const {
+	locale,
+	currency,
+	title,
+	description,
+	path,
+	user = null,
+} = Astro.props as {
+	locale: import('@/lib/i18n').Locale;
+	currency: import('@/lib/currency').Currency;
+	title: string;
+	description: string;
+	path: string;
+	user?: import('@/server/auth').SessionUser | null;
+};
+
+const seo = createSeo(locale, path, title, description);
+---
+
+<!doctype html>
+<html lang={locale}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={seo.canonical} />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={seo.canonical} />
+		<meta property="og:site_name" content="VIP Super Hosting" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<link rel="alternate" hreflang="ro" href={seo.languages.ro} />
+		<link rel="alternate" hreflang="en" href={seo.languages.en} />
+		<link rel="alternate" hreflang="de" href={seo.languages.de} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<Header locale={locale} currency={currency} pathname={path} user={user} />
+		<slot />
+		<Footer locale={locale} />
+	</body>
+</html>

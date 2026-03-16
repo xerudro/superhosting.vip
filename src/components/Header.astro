@@ -1,0 +1,174 @@
+---
+import { localeLabels, locales, stripLocale, withLocale } from '@/lib/i18n';
+import { brand, getPageContent } from '@/lib/site';
+
+const { locale, currency, pathname, user } = Astro.props as {
+	locale: import('@/lib/i18n').Locale;
+	currency: import('@/lib/currency').Currency;
+	pathname: string;
+	user: import('@/server/auth').SessionUser | null;
+};
+
+const content = getPageContent(locale);
+const currentPath = stripLocale(pathname);
+const serviceItems = content.nav.primary.slice(0, 4);
+const servicePaths = new Set(serviceItems.map((item: any) => item.href));
+const topLevelNav = {
+	ro: {
+		home: 'Acasa',
+		about: 'Despre',
+		services: 'Servicii',
+		contact: 'Contact',
+	},
+	en: {
+		home: 'Home',
+		about: 'About',
+		services: 'Services',
+		contact: 'Contact',
+	},
+	de: {
+		home: 'Start',
+		about: 'Uber uns',
+		services: 'Leistungen',
+		contact: 'Kontakt',
+	},
+}[locale];
+const localeShortLabels = {
+	ro: 'RO',
+	en: 'EN',
+	de: 'DE',
+} satisfies Record<(typeof locales)[number], string>;
+---
+
+<div class="nav-shell">
+	<div class="container">
+		<nav class="nav" data-nav-root>
+			<div class="nav__topbar">
+				<a class="nav__brand" href={withLocale(locale, '/')} aria-label={brand.name}>
+					<span class="nav__mark">VIP</span>
+					<span class="nav__brand-copy">
+						<strong>{brand.name}</strong>
+						<small>{brand.domain}</small>
+					</span>
+				</a>
+				<button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-content">
+					Menu
+				</button>
+			</div>
+			<div class="nav__content" id="nav-content" data-nav-expanded="false">
+				<a class="nav__brand nav__brand--desktop" href={withLocale(locale, '/')} aria-label={brand.name}>
+					<span class="nav__mark">VIP</span>
+					<span class="nav__brand-copy">
+						<strong>{brand.name}</strong>
+						<small>{brand.domain}</small>
+					</span>
+				</a>
+				<div class="nav__links">
+					<a href={withLocale(locale, '/')} data-active={currentPath === '/'} aria-label={topLevelNav.home}>
+						{topLevelNav.home}
+					</a>
+					<a href={withLocale(locale, '/about')} data-active={currentPath === '/about'} aria-label={topLevelNav.about}>
+						{topLevelNav.about}
+					</a>
+					<details class="nav__group" data-active={servicePaths.has(currentPath)}>
+						<summary>{topLevelNav.services}</summary>
+						<div class="nav__dropdown">
+							{serviceItems.map((item: any) => (
+								<a href={withLocale(locale, item.href)} data-active={currentPath === item.href} aria-label={item.label}>
+									{item.label}
+								</a>
+							))}
+						</div>
+					</details>
+					<a href={withLocale(locale, '/contact')} data-active={currentPath === '/contact'} aria-label={topLevelNav.contact}>
+						{topLevelNav.contact}
+					</a>
+				</div>
+				<div class="nav__aside">
+					<div class="nav__aside-top">
+						<div class="switcher">
+							<div class="switcher__row">
+								<span class="switcher__label">Language</span>
+								<div class="switcher__group">
+									{locales.map((item) => (
+										<button
+											class="switcher__button switcher__button--circle"
+											type="button"
+											data-kind="locale"
+											data-value={item}
+											data-active={item === locale}
+											aria-label={localeLabels[item]}
+											title={localeLabels[item]}
+										>
+											{localeShortLabels[item]}
+										</button>
+									))}
+								</div>
+							</div>
+						</div>
+						<a class="button button--primary nav__panel-cta" href={brand.controlPanelUrl} target="_blank" rel="noreferrer" aria-label="Open panel">
+							Open panel
+						</a>
+					</div>
+					<div class="nav__account">
+						{user ? (
+							<>
+								<a href={withLocale(locale, '/account')} data-active={currentPath.startsWith('/account')} aria-label={content.nav.account[2].label}>
+									{content.nav.account[2].label}
+								</a>
+								<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer" aria-label="Webmail">
+									Webmail
+								</a>
+							</>
+						) : (
+							<>
+								<a href={withLocale(locale, '/login')} data-active={currentPath === '/login'} aria-label={content.nav.account[0].label}>
+									{content.nav.account[0].label}
+								</a>
+								<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer" aria-label="Webmail">
+									Webmail
+								</a>
+								<a class="button button--primary" href={withLocale(locale, '/register')} aria-label={content.nav.account[1].label}>
+									{content.nav.account[1].label}
+								</a>
+							</>
+						)}
+					</div>
+				</div>
+			</div>
+		</nav>
+	</div>
+</div>
+
+<script is:inline define:vars={{ currentPath, locale }}>
+	const preferenceButtons = Array.from(document.querySelectorAll('.switcher__button'));
+	for (const button of preferenceButtons) {
+		button.addEventListener('click', async () => {
+			const kind = button.dataset.kind;
+			const value = button.dataset.value;
+			if (!kind || !value) return;
+			await fetch('/api/preferences', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ kind, value }),
+			});
+			if (kind === 'locale') {
+				const targetPath = currentPath === '/' ? '/' : currentPath;
+				window.location.href = `/${value}${targetPath === '/' ? '/' : targetPath}`;
+				return;
+			}
+			window.location.reload();
+		});
+	}
+
+	const navRoot = document.querySelector('[data-nav-root]');
+	const navContent = document.querySelector('#nav-content');
+	const navToggle = document.querySelector('.nav__toggle');
+	if (navRoot && navContent && navToggle) {
+		navToggle.addEventListener('click', () => {
+			const expanded = navContent.getAttribute('data-nav-expanded') === 'true';
+			navContent.setAttribute('data-nav-expanded', String(!expanded));
+			navToggle.setAttribute('aria-expanded', String(!expanded));
+		});
+	}
+</script>

@@ -1,0 +1,39 @@
+---
+import { formatMoney } from '@/lib/currency';
+
+const { title, description, plans, currency, anchor } = Astro.props as {
+	title: string;
+	description: string;
+	plans: import('@/lib/site').PricingPlan[];
+	currency: import('@/lib/currency').Currency;
+	anchor?: string;
+};
+---
+
+<section class="section" id={anchor}>
+	<div class="container">
+		<div class="section-head">
+			<h2>{title}</h2>
+			<p>{description}</p>
+		</div>
+		<div class="grid-3">
+			{plans.map((plan) => (
+				<article class:list={['pricing-card', plan.accent && 'pricing-card--accent']} data-price={plan.priceEur}>
+					<span class="badge">{plan.name}</span>
+					<p>{plan.description}</p>
+					<div class="pricing-card__price">
+						<span class="price-number">{formatMoney(plan.priceEur, currency)}</span>
+						<span>/mo</span>
+					</div>
+					<ul class="list-clean">
+						{plan.features.map((feature) => (
+							<li>{feature}</li>
+						))}
+					</ul>
+					<div style="height: 16px;"></div>
+					<a class="button button--primary" href="#configurator">{plan.cta}</a>
+				</article>
+			))}
+		</div>
+	</div>
+</section>

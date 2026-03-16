@@ -1,0 +1,35 @@
+---
+import Layout from '@/components/Layout.astro';
+import { getPageContent } from '@/lib/site';
+import { normalizeLocale } from '@/lib/i18n';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+---
+
+<Layout locale={locale} currency={currency} title={`${content.legal.title} | VIP Super Hosting`} description={content.legal.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section">
+		<div class="container stack">
+			<div class="card stack">
+				<span class="eyebrow">Legal</span>
+				<h1>{content.legal.title}</h1>
+				<p>{content.legal.description}</p>
+			</div>
+			<div class="grid-3">
+				<article class="card stack">
+					<h3>Privacy</h3>
+					<p>We store only the account and request data required to provide hosting, account access and commercial follow-up.</p>
+				</article>
+				<article class="card stack">
+					<h3>Terms</h3>
+					<p>All services are subject to validation, acceptable use and commercially agreed service windows.</p>
+				</article>
+				<article class="card stack">
+					<h3>Cookies</h3>
+					<p>Language, currency and session cookies are used for core website functionality and account access.</p>
+				</article>
+			</div>
+		</div>
+	</section>
+</Layout>

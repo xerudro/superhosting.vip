@@ -1,0 +1,25 @@
+---
+import FeatureGrid from '@/components/FeatureGrid.astro';
+import Layout from '@/components/Layout.astro';
+import { getPageContent, getServiceFeatures } from '@/lib/site';
+import { normalizeLocale, withLocale } from '@/lib/i18n';
+
+const locale = normalizeLocale(Astro.params.locale);
+const currency = Astro.locals.currency;
+const content = getPageContent(locale);
+---
+
+<Layout locale={locale} currency={currency} title={`${content.admin.title} | VIP Super Hosting`} description={content.admin.description} path={Astro.url.pathname} user={Astro.locals.user}>
+	<section class="section">
+		<div class="container card stack">
+			<span class="eyebrow">Server Administration</span>
+			<h1>{content.admin.title}</h1>
+			<p>{content.admin.description}</p>
+			<div class="inline-actions">
+				<a class="button button--primary" href={withLocale(locale, '/contact')}>Request audit</a>
+				<a class="button button--secondary" href={withLocale(locale, '/vps-hosting')}>See VPS</a>
+			</div>
+		</div>
+	</section>
+	<FeatureGrid title="Operational support that stays proactive" description="Use it for periodic maintenance, incident response planning and ongoing hardening." items={getServiceFeatures(locale).admin} />
+</Layout>

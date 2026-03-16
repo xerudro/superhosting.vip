@@ -1,0 +1,86 @@
+---
+const { locale, eyebrow, title, description, primary, secondary, stats } = Astro.props as {
+	locale: import('@/lib/i18n').Locale;
+	eyebrow: string;
+	title: string;
+	description: string;
+	primary: { href: string; label: string };
+	secondary: { href: string; label: string };
+	stats: Array<{ value: string; label: string }>;
+};
+
+const asideContent = {
+	ro: {
+		highlights: ['Managed si unmanaged', 'RO / EN / DE + multi-currency', 'Suport clar si rapid'],
+		badge: 'Stack profesional',
+		body: 'Servicii tehnice si comerciale organizate simplu: hosting, operare si relatie clara cu clientul.',
+		items: ['Shared hosting managed si unmanaged', 'VPS configurabil pentru proiecte serioase', 'Administrare servere si optimizari recurente', 'Web design curat, rapid si credibil'],
+		ctaTitle: 'Pregatit pentru productie',
+		ctaBody: 'Fluxuri comerciale clare, legatura catre panou si webmail, plus account area pentru clienti.',
+	},
+	en: {
+		highlights: ['Managed and unmanaged', 'RO / EN / DE + multi-currency', 'Clear and fast support'],
+		badge: 'Professional stack',
+		body: 'Technical and commercial services shaped into one clear product: hosting, operations and client access.',
+		items: ['Managed and unmanaged shared hosting', 'Configurable VPS for serious workloads', 'Server administration and recurring improvements', 'Clean, credible and fast web design'],
+		ctaTitle: 'Ready for production',
+		ctaBody: 'Clean sales flows, panel and webmail bridges, plus an account area for clients.',
+	},
+	de: {
+		highlights: ['Managed und unmanaged', 'RO / EN / DE + mehrere Wahrungen', 'Klarer und schneller Support'],
+		badge: 'Professioneller Stack',
+		body: 'Technik und Vertrieb als ein klares Gesamtprodukt: Hosting, Betrieb und sauberer Kundenzugang.',
+		items: ['Managed und unmanaged Shared Hosting', 'Konfigurierbares VPS fur anspruchsvolle Projekte', 'Serververwaltung und laufende Optimierung', 'Sauberes, schnelles und glaubwurdiges Web Design'],
+		ctaTitle: 'Bereit fur Produktion',
+		ctaBody: 'Klare Vertriebswege, Links zu Panel und Webmail sowie ein eigener Kundenbereich.',
+	},
+}[locale];
+---
+
+<section class="hero">
+	<div class="container hero__shell">
+		<div class="hero__content panel">
+			<div class="hero__intro">
+				<div class="eyebrow">{eyebrow}</div>
+				<h1>{title}</h1>
+				<p>{description}</p>
+			</div>
+			<div class="hero__trustline">
+				{asideContent.highlights.map((item) => (
+					<span>{item}</span>
+				))}
+			</div>
+			<div class="hero__actions">
+				<a class="button button--primary" href={primary.href}>{primary.label}</a>
+				<a class="button button--secondary" href={secondary.href}>{secondary.label}</a>
+			</div>
+		</div>
+		<div class="hero__aside panel">
+			<div class="hero__visual">
+				<div class="hero__signal">
+					<span class="badge">{asideContent.badge}</span>
+					<p class="hero__aside-copy">{asideContent.body}</p>
+				</div>
+				<div class="hero__aside-grid">
+					<ul class="hero__service-list">
+						{asideContent.items.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+					<div class="hero__mini-card hero__mini-card--accent">
+						<span>{asideContent.ctaTitle}</span>
+						<strong>{asideContent.ctaBody}</strong>
+					</div>
+				</div>
+				<div class="stats hero__stats">
+					{stats.map((item) => (
+						<div class="stat">
+							<strong>{item.value}</strong>
+							<p>{item.label}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

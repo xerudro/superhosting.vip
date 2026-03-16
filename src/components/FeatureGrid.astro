@@ -1,0 +1,26 @@
+---
+const { eyebrow, title, description, items } = Astro.props as {
+	eyebrow?: string;
+	title: string;
+	description: string;
+	items: Array<{ title: string; body: string }>;
+};
+---
+
+<section class="section">
+	<div class="container">
+		<div class="section-head">
+			{eyebrow && <span class="eyebrow">{eyebrow}</span>}
+			<h2>{title}</h2>
+			<p>{description}</p>
+		</div>
+		<div class="grid-3">
+			{items.map((item) => (
+				<article class="feature-card">
+					<h3>{item.title}</h3>
+					<p>{item.body}</p>
+				</article>
+			))}
+		</div>
+	</div>
+</section>
