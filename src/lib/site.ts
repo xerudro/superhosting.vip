@@ -100,6 +100,10 @@ export const pageContent = {
 				{ question: 'Ati inclus si design web?', answer: 'Da, oferim si servicii de web design si optimizare UX pentru lansari complete.' },
 			],
 		},
+		managed: {
+			title: 'Managed Hosting pentru proiecte care cer stabilitate si administrare inclusa',
+			description: 'Pachete hosting si VPS administrate complet, cu backup zilnic, suport prioritar si operare tehnica inclusa.',
+		},
 		shared: {
 			title: 'Shared Hosting pentru site-uri business care cer stabilitate si suport rapid',
 			description: 'Pachete presetate sau configurabile, disponibile managed sau unmanaged, cu accent pe performanta si timp de raspuns bun.',
@@ -186,6 +190,10 @@ export const pageContent = {
 				{ question: 'Do you also handle website design?', answer: 'Yes. We offer web design and UX improvements for end-to-end launches.' },
 			],
 		},
+		managed: {
+			title: 'Managed Hosting for projects that need stability and full administration',
+			description: 'Fully managed hosting and VPS packages with daily backups, priority support and included technical operations.',
+		},
 		shared: {
 			title: 'Shared Hosting for business websites that need stability and responsive support',
 			description: 'Preset or configurable packages, available as managed or unmanaged, with an emphasis on performance and clear operations.',
@@ -271,6 +279,10 @@ export const pageContent = {
 				{ question: 'Kann ich zuerst unmanaged starten und spater managed wechseln?', answer: 'Ja. Pakete sind so aufgebaut, dass sie mit dem Projekt wachsen konnen.' },
 				{ question: 'Ubernehmen Sie auch Web Design?', answer: 'Ja. Fur Kunden mit Komplettbedarf bieten wir Web Design und UX-Optimierung an.' },
 			],
+		},
+		managed: {
+			title: 'Managed Hosting fur Projekte mit Fokus auf Stabilitat und vollstandiger Verwaltung',
+			description: 'Vollstandig verwaltete Hosting- und VPS-Pakete mit taglichen Backups, priorisiertem Support und technischem Betrieb inklusive.',
 		},
 		shared: {
 			title: 'Shared Hosting fur Business-Websites mit Fokus auf Stabilitat und schnellen Support',
