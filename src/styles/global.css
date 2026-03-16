@@ -47,6 +47,7 @@ body {
 	min-height: 100vh;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	overflow-x: clip; /* prevent horizontal scroll from nav or wide elements */
 }
 
 a {
@@ -1308,16 +1309,20 @@ input[type='file'].input::file-selector-button:hover {
 
 /* ─── Responsive ─────────────────────────────────────────── */
 
-/* 1200px — hero layout tightens */
+/* 1300px — hide nav panel CTA button to free space */
+@media (max-width: 1300px) {
+	.nav__panel-cta {
+		display: none;
+	}
+}
+
+/* 1200px — hero layout tightens + hide nav brand text */
 @media (max-width: 1200px) {
 	.hero__shell {
 		grid-template-columns: 1fr 300px;
 		gap: 40px;
 	}
-}
 
-/* 1100px — hide nav brand copy to prevent nav overflow */
-@media (max-width: 1100px) {
 	.nav__brand-copy {
 		display: none;
 	}
