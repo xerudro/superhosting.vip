@@ -651,6 +651,7 @@ button.button {
 .textarea,
 .select {
 	width: 100%;
+	min-width: 0; /* prevent grid/flex overflow */
 	border-radius: var(--radius-md);
 	border: 1px solid var(--border-strong);
 	background: var(--bg-alt);
@@ -659,6 +660,7 @@ button.button {
 	font-size: 0.875rem;
 	outline: none;
 	transition: border-color 130ms ease;
+	box-sizing: border-box;
 }
 
 .input:focus,
@@ -1271,24 +1273,28 @@ button.button {
 
 /* File input */
 input[type='file'].input {
-	padding: 8px 10px;
+	padding: 6px 8px;
 	cursor: pointer;
 	color: var(--muted-light);
+	font-size: 0.82rem;
 }
 
+input[type='file'].input::-webkit-file-upload-button,
 input[type='file'].input::file-selector-button {
 	background: var(--surface-alt);
 	border: 1px solid var(--border-strong);
-	color: var(--text);
-	padding: 5px 12px;
 	border-radius: var(--radius-sm);
+	color: var(--text);
+	padding: 5px 11px;
+	font-family: 'Manrope', sans-serif;
 	font-size: 0.78rem;
 	font-weight: 600;
 	cursor: pointer;
-	margin-right: 12px;
-	transition: background 130ms ease;
+	margin-right: 10px;
+	transition: background 120ms ease;
 }
 
+input[type='file'].input::-webkit-file-upload-button:hover,
 input[type='file'].input::file-selector-button:hover {
 	background: var(--surface-hover);
 }
@@ -1302,13 +1308,22 @@ input[type='file'].input::file-selector-button:hover {
 
 /* ─── Responsive ─────────────────────────────────────────── */
 
+/* 1200px — hero layout tightens */
 @media (max-width: 1200px) {
 	.hero__shell {
-		grid-template-columns: 1fr 320px;
+		grid-template-columns: 1fr 300px;
 		gap: 40px;
 	}
 }
 
+/* 1100px — hide nav brand copy to prevent nav overflow */
+@media (max-width: 1100px) {
+	.nav__brand-copy {
+		display: none;
+	}
+}
+
+/* 1024px — single-col hero, tighter account layout, 2-col grid-3 */
 @media (max-width: 1024px) {
 	.hero__shell {
 		grid-template-columns: 1fr;
@@ -1320,7 +1335,7 @@ input[type='file'].input::file-selector-button:hover {
 	}
 
 	.account-layout {
-		grid-template-columns: 220px 1fr;
+		grid-template-columns: 210px 1fr;
 	}
 
 	.account-sidebar {
@@ -1331,50 +1346,14 @@ input[type='file'].input::file-selector-button:hover {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.account-grid {
-		grid-template-columns: 1fr;
-	}
-
-	.account-meta-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
 	.footer__shell {
 		grid-template-columns: 1fr;
 		gap: 32px;
 	}
 }
 
-@media (max-width: 720px) {
-	.section {
-		padding: 48px 0;
-	}
-
-	.hero {
-		padding: 36px 0 52px;
-	}
-
-	.grid-3,
-	.grid-2,
-	.split,
-	.summary-strip,
-	.stats,
-	.footer__cols,
-	.account-layout {
-		grid-template-columns: 1fr;
-	}
-
-	.form-grid--2 {
-		grid-template-columns: 1fr;
-	}
-
-	.account-identity {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-
-	/* Nav mobile */
-
+/* 900px — nav collapses to hamburger */
+@media (max-width: 900px) {
 	.nav__topbar {
 		display: flex;
 	}
@@ -1446,6 +1425,31 @@ input[type='file'].input::file-selector-button:hover {
 
 	.nav__toggle {
 		display: flex;
+	}
+}
+
+/* 720px — single column everything, mobile layouts */
+@media (max-width: 720px) {
+	.section {
+		padding: 48px 0;
+	}
+
+	.hero {
+		padding: 36px 0 52px;
+	}
+
+	.grid-3,
+	.grid-2,
+	.split,
+	.summary-strip,
+	.stats,
+	.footer__cols,
+	.account-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.form-grid--2 {
+		grid-template-columns: 1fr;
 	}
 
 	.footer__copy {
