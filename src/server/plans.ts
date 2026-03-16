@@ -2,6 +2,7 @@ import { getPool } from './db';
 import type { PricingPlan } from '@/lib/site';
 import type { Locale } from '@/lib/i18n';
 import { isCurrency } from '@/lib/currency';
+import { getHetznerServerType } from './hetzner';
 
 interface DbProduct {
 	id: string;
@@ -12,6 +13,7 @@ interface DbProduct {
 	config_options: Record<string, unknown>;
 	sort_order: number;
 	currency: string | null;
+	server_type: string | null;
 }
 
 function buildFeatures(row: DbProduct): string[] {
@@ -38,7 +40,7 @@ async function fetchByGroup(groupName: string): Promise<DbProduct[]> {
 
 	try {
 		const { rows } = await pool.query<DbProduct>(
-			`SELECT p.id, p.name, p.description, p.product_type, p.pricing, p.config_options, p.sort_order, p.currency
+			`SELECT p.id, p.name, p.description, p.product_type, p.pricing, p.config_options, p.sort_order, p.currency, p.server_type
 			 FROM products p
 			 JOIN product_groups pg ON p.product_group_id = pg.id
 			 WHERE pg.name = $1
@@ -74,7 +76,27 @@ export async function getSharedPlansFromDb(locale: Locale): Promise<PricingPlan[
 
 export async function getVpsPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
 	const rows = await fetchByGroup('VPS Hosting');
-	return rows.map((row, i) => toPlan(row, i, 'vps', locale));
+	return Promise.all(rows.map(async (row, i) => {
+		const hz = row.server_type ? await getHetznerServerType(row.server_type) : undefined;
+		const features = hz
+			? [
+				`${hz.cores} vCPU ${hz.cpu_type === 'dedicated' ? 'Dedicated' : 'Shared'} ${hz.architecture.toUpperCase()}`,
+				`${hz.memory} GB RAM`,
+				`${hz.disk} GB NVMe SSD`,
+				'20 TB Transfer',
+				'1 IP dedicat',
+			]
+			: buildFeatures(row);
+		return {
+			name: row.name,
+			description: '',
+			priceEur: hz ? hz.priceMonthlyFinal : (row.pricing.monthly ?? 0),
+			priceCurrency: 'EUR' as const,
+			accent: i === 0,
+			cta: ctaLabel(locale, 'vps'),
+			features,
+		};
+	}));
 }
 
 export async function getManagedPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
