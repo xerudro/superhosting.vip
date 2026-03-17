@@ -12,7 +12,7 @@ export const currencyByLocale: Record<CurrencyLocale, Currency> = {
 const rates: Record<Currency, number> = {
 	EUR: 1,
 	USD: 1.09,
-	RON: 4.97,
+	RON: 5.10,
 };
 
 const localesByCurrency: Record<Currency, string> = {

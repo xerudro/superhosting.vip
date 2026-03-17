@@ -5,12 +5,15 @@ import Layout from '@/components/Layout.astro';
 import PricingCards from '@/components/PricingCards.astro';
 import { getPageContent, getServiceFeatures } from '@/lib/site';
 import { normalizeLocale } from '@/lib/i18n';
-import { getVpsPlansFromDb } from '@/server/plans';
+import { getVpsPlansFromDb, getManagedVpsPlansFromDb } from '@/server/plans';
 
 const locale = normalizeLocale(Astro.params.locale);
 const currency = Astro.locals.currency;
 const content = getPageContent(locale);
-const vpsPlans = await getVpsPlansFromDb(locale);
+const [vpsPlans, managedVpsPlans] = await Promise.all([
+	getVpsPlansFromDb(locale),
+	getManagedVpsPlansFromDb(locale),
+]);
 ---
 
 <Layout locale={locale} currency={currency} title={`${content.vps.title} | VIP Super Hosting`} description={content.vps.description} path={Astro.url.pathname} user={Astro.locals.user}>
@@ -30,5 +33,6 @@ const vpsPlans = await getVpsPlansFromDb(locale);
 	</section>
 	<FeatureGrid title={content.vps.featureTitle} description={content.vps.description} items={getServiceFeatures(locale).vps} />
 	<PricingCards title={content.vps.tiersTitle} description={content.vps.tiersDescription} plans={vpsPlans} currency={currency} anchor="plans" />
+	<PricingCards title={content.vps.managedTitle} description={content.managed.description} plans={managedVpsPlans} currency={currency} />
 	<Configurator id="configurator" title={content.vps.configuratorTitle} description={content.vps.configuratorDescription} type="vps-config" locale={locale} />
 </Layout>

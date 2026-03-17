@@ -91,7 +91,6 @@ export async function getVpsPlansFromDb(locale: Locale): Promise<PricingPlan[]> 
 			name: row.name,
 			description: '',
 			priceEur: hz ? hz.priceMonthlyFinal : (row.pricing.monthly ?? 0),
-			priceCurrency: 'EUR' as const,
 			accent: i === 0,
 			cta: ctaLabel(locale, 'vps'),
 			features,
@@ -99,7 +98,18 @@ export async function getVpsPlansFromDb(locale: Locale): Promise<PricingPlan[]> 
 	}));
 }
 
+// Managed shared hosting plans (WooCommerce, ecommerce, etc.) — name does NOT contain "VPS"
 export async function getManagedPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
 	const rows = await fetchByGroup('Managed Hosting');
-	return rows.map((row, i) => toPlan(row, i, 'managed', locale));
+	return rows
+		.filter((row) => !/vps/i.test(row.name))
+		.map((row, i) => toPlan(row, i, 'managed', locale));
+}
+
+// Managed VPS plans — name contains "VPS"
+export async function getManagedVpsPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
+	const rows = await fetchByGroup('Managed Hosting');
+	return rows
+		.filter((row) => /vps/i.test(row.name))
+		.map((row, i) => toPlan(row, i, 'managed', locale));
 }

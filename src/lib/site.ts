@@ -64,7 +64,7 @@ export const pageContent = {
 		seoSuffix: 'VIP Super Hosting',
 		nav: {
 			primary: [
-				{ href: '/shared-hosting', label: 'Shared Hosting' },
+				{ href: '/shared-hosting', label: 'Web Hosting' },
 				{ href: '/vps-hosting', label: 'VPS Hosting' },
 				{ href: '/server-administration', label: 'Administrare Servere' },
 				{ href: '/web-design', label: 'Web Design' },
@@ -131,6 +131,7 @@ export const pageContent = {
 			featureTitle: 'Control si flexibilitate fara zgomotul unui provider public',
 			tiersTitle: 'Pachete VPS presetate',
 			tiersDescription: 'Pornesti dintr-un punct verificat si solicitati o configuratie adaptata workload-ului vostru.',
+			managedTitle: 'Planuri Managed VPS',
 			configuratorTitle: 'Construieste o cerere VPS personalizata',
 			configuratorDescription: 'Ajusteaza parametrii tehnici si trimite rezumatul cererii pentru analiza.',
 		},
@@ -165,7 +166,7 @@ export const pageContent = {
 		seoSuffix: 'VIP Super Hosting',
 		nav: {
 			primary: [
-				{ href: '/shared-hosting', label: 'Shared Hosting' },
+				{ href: '/shared-hosting', label: 'Web Hosting' },
 				{ href: '/vps-hosting', label: 'VPS Hosting' },
 				{ href: '/server-administration', label: 'Server Administration' },
 				{ href: '/web-design', label: 'Web Design' },
@@ -232,6 +233,7 @@ export const pageContent = {
 			featureTitle: 'Control and flexibility without public provider noise',
 			tiersTitle: 'Preset VPS tiers',
 			tiersDescription: 'Build from proven starting points, then request a tuned quote for your workload.',
+			managedTitle: 'Managed VPS plans',
 			configuratorTitle: 'Build a tailored VPS request',
 			configuratorDescription: 'Adjust the technical parameters and send the request summary for review.',
 		},
@@ -266,7 +268,7 @@ export const pageContent = {
 		seoSuffix: 'VIP Super Hosting',
 		nav: {
 			primary: [
-				{ href: '/shared-hosting', label: 'Shared Hosting' },
+				{ href: '/shared-hosting', label: 'Web Hosting' },
 				{ href: '/vps-hosting', label: 'VPS Hosting' },
 				{ href: '/server-administration', label: 'Serververwaltung' },
 				{ href: '/web-design', label: 'Web Design' },
@@ -333,6 +335,7 @@ export const pageContent = {
 			featureTitle: 'Kontrolle und Flexibilitat ohne den Larm offentlicher Anbieter',
 			tiersTitle: 'Vordefinierte VPS-Pakete',
 			tiersDescription: 'Starten Sie von bewahrten Ausgangspunkten und fordern Sie ein angepasstes Angebot an.',
+			managedTitle: 'Managed-VPS-Pakete',
 			configuratorTitle: 'Erstellen Sie eine individuelle VPS-Anfrage',
 			configuratorDescription: 'Passen Sie die technischen Parameter an und senden Sie die Anfragezusammenfassung zur Prufung.',
 		},
