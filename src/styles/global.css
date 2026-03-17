@@ -833,7 +833,7 @@ button.button {
 .nav__brand-copy strong {
 	font-size: 0.85rem;
 	font-weight: 700;
-	color: var(--text);
+	color: var(--accent);
 	line-height: 1;
 }
 
@@ -1002,6 +1002,7 @@ button.button {
 .nav__panel-cta {
 	font-size: 0.78rem;
 	padding: 6px 12px;
+	color: #fff !important;
 }
 
 .nav__toggle {
