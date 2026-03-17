@@ -20,8 +20,8 @@ export const brand = {
 	name: 'VIP Super Hosting',
 	domain: 'superhosting.vip',
 	email: 'hello@superhosting.vip',
-	phone: '+40 741 000 777',
-	location: 'Bucharest, Romania',
+	phone: '+40 770 192 117',
+	location: 'Satu Mare, Romania',
 	controlPanelUrl: import.meta.env.CONTROL_PANEL_URL ?? 'https://panel.superhosting.vip',
 	webmailUrl: import.meta.env.WEBMAIL_URL ?? 'https://webmail.superhosting.vip',
 };
