@@ -518,6 +518,14 @@ button.button {
 	color: var(--muted);
 }
 
+.price-asterisk {
+	font-size: 0.9rem;
+	font-weight: 700;
+	vertical-align: super;
+	color: var(--muted);
+	margin-left: 1px;
+}
+
 .pricing-card ul,
 .service-card ul,
 .list-clean {
@@ -1175,8 +1183,23 @@ button.button {
 	color: var(--text);
 }
 
+.footer__disclaimer {
+	margin-top: 28px;
+	padding: 12px 16px;
+	border-left: 3px solid var(--border);
+	font-size: 0.75rem;
+	color: var(--muted);
+	line-height: 1.6;
+}
+
+.footer__disclaimer sup {
+	font-size: 0.7em;
+	vertical-align: super;
+	margin-right: 2px;
+}
+
 .footer__copy {
-	margin-top: 36px;
+	margin-top: 20px;
 	padding-top: 20px;
 	border-top: 1px solid var(--border);
 	font-size: 0.75rem;
