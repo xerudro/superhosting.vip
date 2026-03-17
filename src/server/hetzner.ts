@@ -1,5 +1,6 @@
+import { getMarkupPercent } from './settings';
+
 const HETZNER_API = 'https://api.hetzner.cloud/v1';
-const MARKUP = 1.40; // 40% margin on top of Hetzner price
 const BACKUP_RATE = 0.20; // 20% of VPS price for backups
 
 export interface HetznerServerType {
@@ -35,6 +36,11 @@ let _cache: HetznerServerType[] | null = null;
 let _cacheAt = 0;
 const CACHE_TTL = 10 * 60 * 1000; // 10 min
 
+export function invalidateHetznerCache() {
+	_cache = null;
+	_cacheAt = 0;
+}
+
 export async function getHetznerServerTypes(): Promise<HetznerServerType[]> {
 	if (_cache && Date.now() - _cacheAt < CACHE_TTL) return _cache;
 
@@ -43,6 +49,9 @@ export async function getHetznerServerTypes(): Promise<HetznerServerType[]> {
 		console.warn('[hetzner] HETZNER_API_KEY not set');
 		return [];
 	}
+
+	const markupPercent = await getMarkupPercent();
+	const markupMultiplier = 1 + markupPercent / 100;
 
 	try {
 		const res = await fetch(`${HETZNER_API}/server_types?per_page=50`, {
@@ -58,7 +67,7 @@ export async function getHetznerServerTypes(): Promise<HetznerServerType[]> {
 				const priceEntry =
 					t.prices.find((p) => p.location === 'fsn1') ?? t.prices[0];
 				const net = parseFloat(priceEntry?.price_monthly?.net ?? '0');
-				const final = Math.ceil(net * MARKUP * 100) / 100;
+				const final = Math.ceil(net * markupMultiplier * 100) / 100;
 				return {
 					name: t.name,
 					description: t.description,

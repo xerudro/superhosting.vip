@@ -46,3 +46,11 @@ export async function getRonRate(): Promise<number> {
 	const parsed = parseFloat(raw);
 	return isNaN(parsed) || parsed <= 0 ? DEFAULT_RON_RATE : parsed;
 }
+
+const DEFAULT_MARKUP_PERCENT = 40;
+
+export async function getMarkupPercent(): Promise<number> {
+	const raw = await getSetting('hetzner_markup_percent', String(DEFAULT_MARKUP_PERCENT));
+	const parsed = parseFloat(raw);
+	return isNaN(parsed) || parsed < 0 ? DEFAULT_MARKUP_PERCENT : parsed;
+}
