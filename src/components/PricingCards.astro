@@ -1,12 +1,13 @@
 ---
 import { formatMoney, formatMoneyRaw } from '@/lib/currency';
 
-const { title, description, plans, currency, anchor } = Astro.props as {
+const { title, description, plans, currency, anchor, ronRate } = Astro.props as {
 	title: string;
 	description: string;
 	plans: import('@/lib/site').PricingPlan[];
 	currency: import('@/lib/currency').Currency;
 	anchor?: string;
+	ronRate?: number;
 };
 ---
 
@@ -22,7 +23,7 @@ const { title, description, plans, currency, anchor } = Astro.props as {
 					<span class="badge">{plan.name}</span>
 					<p>{plan.description}</p>
 					<div class="pricing-card__price">
-						<span class="price-number">{plan.priceCurrency ? formatMoneyRaw(plan.priceEur, plan.priceCurrency) : formatMoney(plan.priceEur, currency)}</span>
+						<span class="price-number">{plan.priceCurrency ? formatMoneyRaw(plan.priceEur, plan.priceCurrency) : formatMoney(plan.priceEur, currency, ronRate)}</span>
 						<span class="price-suffix">/mo</span>
 					</div>
 					<ul class="list-clean">

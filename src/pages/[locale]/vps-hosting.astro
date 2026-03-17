@@ -32,7 +32,7 @@ const [vpsPlans, managedVpsPlans] = await Promise.all([
 		</div>
 	</section>
 	<FeatureGrid title={content.vps.featureTitle} description={content.vps.description} items={getServiceFeatures(locale).vps} />
-	<PricingCards title={content.vps.tiersTitle} description={content.vps.tiersDescription} plans={vpsPlans} currency={currency} anchor="plans" />
-	<PricingCards title={content.vps.managedTitle} description={content.managed.description} plans={managedVpsPlans} currency={currency} />
+	<PricingCards title={content.vps.tiersTitle} description={content.vps.tiersDescription} plans={vpsPlans} currency={currency} ronRate={Astro.locals.ronRate} anchor="plans" />
+	<PricingCards title={content.vps.managedTitle} description={content.managed.description} plans={managedVpsPlans} currency={currency} ronRate={Astro.locals.ronRate} />
 	<Configurator id="configurator" title={content.vps.configuratorTitle} description={content.vps.configuratorDescription} type="vps-config" locale={locale} />
 </Layout>

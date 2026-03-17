@@ -32,7 +32,7 @@ const [sharedPlans, managedPlans] = await Promise.all([
 		</div>
 	</section>
 	<FeatureGrid title={content.shared.featureTitle} description={content.shared.description} items={getServiceFeatures(locale).shared} />
-	<PricingCards title={content.shared.tiersTitle} description={content.shared.tiersDescription} plans={sharedPlans} currency={currency} anchor="plans" />
-	<PricingCards title={content.shared.managedTitle} description={content.managed.description} plans={managedPlans} currency={currency} />
+	<PricingCards title={content.shared.tiersTitle} description={content.shared.tiersDescription} plans={sharedPlans} currency={currency} ronRate={Astro.locals.ronRate} anchor="plans" />
+	<PricingCards title={content.shared.managedTitle} description={content.managed.description} plans={managedPlans} currency={currency} ronRate={Astro.locals.ronRate} />
 	<Configurator id="configurator" title={content.shared.configuratorTitle} description={content.shared.configuratorDescription} type="shared-config" locale={locale} />
 </Layout>
