@@ -58,12 +58,6 @@ const labels = {
 			</div>
 		</div>
 
-		{locale === 'ro' && (
-			<div class="footer__disclaimer">
-				<p><sup>*</sup> Toate prețurile sunt afișate în RON pentru claritate și predictibilitate. Tarifele sunt calculate pe baza costurilor operaționale în EUR și pot fi revizuite periodic în funcție de curs și costurile furnizorilor.</p>
-			</div>
-		)}
-
 		<div class="footer__copy">
 			<span>&copy; {year} {brand.name}. {labels.copy}</span>
 			<a href={withLocale(locale, '/legal')} style="color: var(--muted-light);">{labels.legal}</a>

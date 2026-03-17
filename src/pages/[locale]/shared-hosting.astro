@@ -2,6 +2,7 @@
 import Configurator from '@/components/Configurator.astro';
 import FeatureGrid from '@/components/FeatureGrid.astro';
 import Layout from '@/components/Layout.astro';
+import PriceDisclaimer from '@/components/PriceDisclaimer.astro';
 import PricingCards from '@/components/PricingCards.astro';
 import { getPageContent, getServiceFeatures } from '@/lib/site';
 import { normalizeLocale } from '@/lib/i18n';
@@ -35,4 +36,5 @@ const [sharedPlans, managedPlans] = await Promise.all([
 	<PricingCards title={content.shared.tiersTitle} description={content.shared.tiersDescription} plans={sharedPlans} currency={currency} ronRate={Astro.locals.ronRate} anchor="plans" />
 	<PricingCards title={content.shared.managedTitle} description={content.managed.description} plans={managedPlans} currency={currency} ronRate={Astro.locals.ronRate} />
 	<Configurator id="configurator" title={content.shared.configuratorTitle} description={content.shared.configuratorDescription} type="shared-config" locale={locale} />
+	<PriceDisclaimer locale={locale} />
 </Layout>

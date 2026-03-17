@@ -519,11 +519,12 @@ button.button {
 }
 
 .price-asterisk {
-	font-size: 0.9rem;
-	font-weight: 700;
+	font-size: 1rem;
+	font-weight: 800;
 	vertical-align: super;
-	color: var(--muted);
-	margin-left: 1px;
+	color: var(--accent);
+	margin-left: 2px;
+	line-height: 0;
 }
 
 .pricing-card ul,
@@ -1183,17 +1184,18 @@ button.button {
 	color: var(--text);
 }
 
-.footer__disclaimer {
-	margin-top: 28px;
-	padding: 12px 16px;
-	border-left: 3px solid var(--border);
-	font-size: 0.75rem;
+.price-disclaimer {
+	padding: 20px 0 8px;
+	font-size: 0.78rem;
 	color: var(--muted);
-	line-height: 1.6;
+	line-height: 1.7;
+	border-top: 1px solid var(--border);
 }
 
-.footer__disclaimer sup {
-	font-size: 0.7em;
+.price-disclaimer sup {
+	color: var(--accent);
+	font-weight: 800;
+	font-size: 0.75em;
 	vertical-align: super;
 	margin-right: 2px;
 }

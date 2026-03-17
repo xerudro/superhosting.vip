@@ -2,6 +2,7 @@
 import Configurator from '@/components/Configurator.astro';
 import FeatureGrid from '@/components/FeatureGrid.astro';
 import Layout from '@/components/Layout.astro';
+import PriceDisclaimer from '@/components/PriceDisclaimer.astro';
 import PricingCards from '@/components/PricingCards.astro';
 import { getPageContent, getServiceFeatures } from '@/lib/site';
 import { normalizeLocale } from '@/lib/i18n';
@@ -35,4 +36,5 @@ const [vpsPlans, managedVpsPlans] = await Promise.all([
 	<PricingCards title={content.vps.tiersTitle} description={content.vps.tiersDescription} plans={vpsPlans} currency={currency} ronRate={Astro.locals.ronRate} anchor="plans" />
 	<PricingCards title={content.vps.managedTitle} description={content.managed.description} plans={managedVpsPlans} currency={currency} ronRate={Astro.locals.ronRate} />
 	<Configurator id="configurator" title={content.vps.configuratorTitle} description={content.vps.configuratorDescription} type="vps-config" locale={locale} />
+	<PriceDisclaimer locale={locale} />
 </Layout>
