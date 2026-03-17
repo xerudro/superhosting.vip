@@ -3,6 +3,7 @@ import type { AstroCookies } from 'astro';
 import { getCurrencyForLocale } from '@/lib/currency';
 import { defaultLocale, getLocaleFromPath, isLocale, withLocale } from '@/lib/i18n';
 import { getSessionUser } from '@/server/auth';
+import { getRonRate } from '@/server/settings';
 
 const bareRoutes = new Set([
 	'/shared-hosting',
@@ -16,6 +17,7 @@ const bareRoutes = new Set([
 	'/register',
 	'/forgot-password',
 	'/account',
+	'/admin',
 ]);
 
 function getPreferredLocale(request: Request, cookies: AstroCookies) {
@@ -40,9 +42,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	context.locals.locale = locale;
 	context.locals.currency = getCurrencyForLocale(locale);
 	context.locals.user = await getSessionUser(context.cookies);
+	context.locals.ronRate = await getRonRate();
 
 	if (pathname.match(/^\/(ro|en|de)\/account/) && !context.locals.user) {
 		return context.redirect(withLocale(locale, '/login?error=auth'));
+	}
+
+	if (pathname.match(/^\/(ro|en|de)\/admin/)) {
+		const adminEmail = import.meta.env.ADMIN_EMAIL;
+		if (!context.locals.user || !adminEmail || context.locals.user.email !== adminEmail) {
+			return context.redirect(withLocale(locale, '/login?error=auth'));
+		}
 	}
 
 	const response = await next();

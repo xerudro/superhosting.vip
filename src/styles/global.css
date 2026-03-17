@@ -518,6 +518,15 @@ button.button {
 	color: var(--muted);
 }
 
+.price-asterisk {
+	font-size: 1rem;
+	font-weight: 800;
+	vertical-align: super;
+	color: var(--accent);
+	margin-left: 2px;
+	line-height: 0;
+}
+
 .pricing-card ul,
 .service-card ul,
 .list-clean {
@@ -824,7 +833,7 @@ button.button {
 .nav__brand-copy strong {
 	font-size: 0.85rem;
 	font-weight: 700;
-	color: var(--text);
+	color: var(--accent);
 	line-height: 1;
 }
 
@@ -993,6 +1002,7 @@ button.button {
 .nav__panel-cta {
 	font-size: 0.78rem;
 	padding: 6px 12px;
+	color: #fff !important;
 }
 
 .nav__toggle {
@@ -1175,8 +1185,24 @@ button.button {
 	color: var(--text);
 }
 
+.price-disclaimer {
+	padding: 20px 0 8px;
+	font-size: 0.78rem;
+	color: var(--muted);
+	line-height: 1.7;
+	border-top: 1px solid var(--border);
+}
+
+.price-disclaimer sup {
+	color: var(--accent);
+	font-weight: 800;
+	font-size: 0.75em;
+	vertical-align: super;
+	margin-right: 2px;
+}
+
 .footer__copy {
-	margin-top: 36px;
+	margin-top: 20px;
 	padding-top: 20px;
 	border-top: 1px solid var(--border);
 	font-size: 0.75rem;

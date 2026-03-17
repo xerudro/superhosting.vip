@@ -7,6 +7,7 @@ export type PricingPlan = {
 	name: string;
 	description: string;
 	priceEur: number;
+	priceCurrency?: import('@/lib/currency').Currency;
 	accent?: boolean;
 	cta: string;
 	features: readonly string[];
@@ -19,8 +20,8 @@ export const brand = {
 	name: 'VIP Super Hosting',
 	domain: 'superhosting.vip',
 	email: 'hello@superhosting.vip',
-	phone: '+40 741 000 777',
-	location: 'Bucharest, Romania',
+	phone: '+40 770 192 117',
+	location: 'Satu Mare, Romania',
 	controlPanelUrl: import.meta.env.CONTROL_PANEL_URL ?? 'https://panel.superhosting.vip',
 	webmailUrl: import.meta.env.WEBMAIL_URL ?? 'https://webmail.superhosting.vip',
 };
@@ -63,7 +64,7 @@ export const pageContent = {
 		seoSuffix: 'VIP Super Hosting',
 		nav: {
 			primary: [
-				{ href: '/shared-hosting', label: 'Shared Hosting' },
+				{ href: '/shared-hosting', label: 'Web Hosting' },
 				{ href: '/vps-hosting', label: 'VPS Hosting' },
 				{ href: '/server-administration', label: 'Administrare Servere' },
 				{ href: '/web-design', label: 'Web Design' },
@@ -99,6 +100,11 @@ export const pageContent = {
 				{ question: 'Pot incepe unmanaged si trece ulterior pe managed?', answer: 'Da, pachetul poate evolua pe masura ce proiectul creste.' },
 				{ question: 'Ati inclus si design web?', answer: 'Da, oferim si servicii de web design si optimizare UX pentru lansari complete.' },
 			],
+			servicesEyebrow: 'Servicii',
+			comparisonTitle: 'Alege platforma potrivita',
+			comparisonDescription: 'Compara cele doua familii de servicii inainte de a solicita o recomandare personalizata.',
+			faqTitle: 'Intrebari frecvente',
+			faqDescription: 'Raspunsuri scurte pentru cele mai comune intrebari comerciale.',
 		},
 		managed: {
 			title: 'Managed Hosting pentru proiecte care cer stabilitate si administrare inclusa',
@@ -112,6 +118,12 @@ export const pageContent = {
 				'Cache si optimizari gandite pentru website-uri rapide',
 				'Optiune de administrare inclusa pentru echipe fara sysadmin intern',
 			],
+			featureTitle: 'Hosting shared construit pentru operare lina',
+			tiersTitle: 'Pachete shared hosting presetate',
+			tiersDescription: 'Pornesti dintr-un baseline curat, cu optiunea de a trece la cerinte custom oricand.',
+			managedTitle: 'Planuri managed hosting',
+			configuratorTitle: 'Ai nevoie de un shared hosting personalizat?',
+			configuratorDescription: 'Trimite-ne parametrii de baza si revenim cu o oferta adaptata echipei tale.',
 		},
 		vps: {
 			title: 'VPS Hosting pentru aplicatii, magazine si infrastructura care cere control real',
@@ -121,6 +133,12 @@ export const pageContent = {
 				'Configurator live pentru nevoi custom',
 				'Managed si unmanaged in functie de nivelul de control dorit',
 			],
+			featureTitle: 'Control si flexibilitate fara zgomotul unui provider public',
+			tiersTitle: 'Pachete VPS presetate',
+			tiersDescription: 'Pornesti dintr-un punct verificat si solicitati o configuratie adaptata workload-ului vostru.',
+			managedTitle: 'Planuri Managed VPS',
+			configuratorTitle: 'Construieste o cerere VPS personalizata',
+			configuratorDescription: 'Ajusteaza parametrii tehnici si trimite rezumatul cererii pentru analiza.',
 		},
 		admin: {
 			title: 'Administrare servere pentru update-uri, hardening si performanta continua',
@@ -153,7 +171,7 @@ export const pageContent = {
 		seoSuffix: 'VIP Super Hosting',
 		nav: {
 			primary: [
-				{ href: '/shared-hosting', label: 'Shared Hosting' },
+				{ href: '/shared-hosting', label: 'Web Hosting' },
 				{ href: '/vps-hosting', label: 'VPS Hosting' },
 				{ href: '/server-administration', label: 'Server Administration' },
 				{ href: '/web-design', label: 'Web Design' },
@@ -189,6 +207,11 @@ export const pageContent = {
 				{ question: 'Can I start unmanaged and move to managed later?', answer: 'Yes. Packages are structured to evolve with your project.' },
 				{ question: 'Do you also handle website design?', answer: 'Yes. We offer web design and UX improvements for end-to-end launches.' },
 			],
+			servicesEyebrow: 'Services',
+			comparisonTitle: 'Choose the right platform',
+			comparisonDescription: 'Compare the two service families before requesting a tailored recommendation.',
+			faqTitle: 'Frequently asked questions',
+			faqDescription: 'Short answers for the most common commercial questions.',
 		},
 		managed: {
 			title: 'Managed Hosting for projects that need stability and full administration',
@@ -202,6 +225,12 @@ export const pageContent = {
 				'Caching and optimizations for fast websites',
 				'Managed administration for teams without an in-house sysadmin',
 			],
+			featureTitle: 'Shared hosting built for calm operations',
+			tiersTitle: 'Preset shared hosting tiers',
+			tiersDescription: 'Start from a clean baseline, then switch to custom requirements when needed.',
+			managedTitle: 'Managed hosting plans',
+			configuratorTitle: 'Need a custom shared hosting quote?',
+			configuratorDescription: 'Tune the core parameters and send the requirement summary to our team.',
 		},
 		vps: {
 			title: 'VPS Hosting for apps, stores and infrastructure that require real control',
@@ -211,6 +240,12 @@ export const pageContent = {
 				'Live configurator for custom workloads',
 				'Managed or unmanaged according to the level of control you need',
 			],
+			featureTitle: 'Control and flexibility without public provider noise',
+			tiersTitle: 'Preset VPS tiers',
+			tiersDescription: 'Build from proven starting points, then request a tuned quote for your workload.',
+			managedTitle: 'Managed VPS plans',
+			configuratorTitle: 'Build a tailored VPS request',
+			configuratorDescription: 'Adjust the technical parameters and send the request summary for review.',
 		},
 		admin: {
 			title: 'Server administration for updates, hardening and ongoing performance',
@@ -243,7 +278,7 @@ export const pageContent = {
 		seoSuffix: 'VIP Super Hosting',
 		nav: {
 			primary: [
-				{ href: '/shared-hosting', label: 'Shared Hosting' },
+				{ href: '/shared-hosting', label: 'Web Hosting' },
 				{ href: '/vps-hosting', label: 'VPS Hosting' },
 				{ href: '/server-administration', label: 'Serververwaltung' },
 				{ href: '/web-design', label: 'Web Design' },
@@ -279,6 +314,11 @@ export const pageContent = {
 				{ question: 'Kann ich zuerst unmanaged starten und spater managed wechseln?', answer: 'Ja. Pakete sind so aufgebaut, dass sie mit dem Projekt wachsen konnen.' },
 				{ question: 'Ubernehmen Sie auch Web Design?', answer: 'Ja. Fur Kunden mit Komplettbedarf bieten wir Web Design und UX-Optimierung an.' },
 			],
+			servicesEyebrow: 'Leistungen',
+			comparisonTitle: 'Die richtige Plattform wahlen',
+			comparisonDescription: 'Vergleiche die zwei Service-Familien, bevor du eine individuelle Empfehlung anforderst.',
+			faqTitle: 'Haufig gestellte Fragen',
+			faqDescription: 'Kurze Antworten auf die haufigsten kommerziellen Fragen.',
 		},
 		managed: {
 			title: 'Managed Hosting fur Projekte mit Fokus auf Stabilitat und vollstandiger Verwaltung',
@@ -292,6 +332,12 @@ export const pageContent = {
 				'Caching und Optimierungen fur schnelle Websites',
 				'Managed-Verwaltung fur Teams ohne eigenen Sysadmin',
 			],
+			featureTitle: 'Shared Hosting fur ruhigen Betrieb',
+			tiersTitle: 'Vordefinierte Shared-Hosting-Pakete',
+			tiersDescription: 'Starten Sie mit einer sauberen Basis und wechseln Sie bei Bedarf zu individuellen Anforderungen.',
+			managedTitle: 'Managed-Hosting-Pakete',
+			configuratorTitle: 'Benotigen Sie ein individuelles Shared-Hosting-Angebot?',
+			configuratorDescription: 'Passen Sie die Kernparameter an und senden Sie die Zusammenfassung an unser Team.',
 		},
 		vps: {
 			title: 'VPS Hosting fur Anwendungen, Shops und Infrastruktur mit echtem Kontrollbedarf',
@@ -301,6 +347,12 @@ export const pageContent = {
 				'Live-Konfigurator fur individuelle Anforderungen',
 				'Managed oder unmanaged je nach gewunschtem Kontrollgrad',
 			],
+			featureTitle: 'Kontrolle und Flexibilitat ohne den Larm offentlicher Anbieter',
+			tiersTitle: 'Vordefinierte VPS-Pakete',
+			tiersDescription: 'Starten Sie von bewahrten Ausgangspunkten und fordern Sie ein angepasstes Angebot an.',
+			managedTitle: 'Managed-VPS-Pakete',
+			configuratorTitle: 'Erstellen Sie eine individuelle VPS-Anfrage',
+			configuratorDescription: 'Passen Sie die technischen Parameter an und senden Sie die Anfragezusammenfassung zur Prufung.',
 		},
 		admin: {
 			title: 'Serververwaltung fur Updates, Hardening und nachhaltige Performance',

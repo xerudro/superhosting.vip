@@ -1,6 +1,8 @@
 import { getPool } from './db';
 import type { PricingPlan } from '@/lib/site';
 import type { Locale } from '@/lib/i18n';
+import { isCurrency } from '@/lib/currency';
+import { getHetznerServerType } from './hetzner';
 
 interface DbProduct {
 	id: string;
@@ -10,6 +12,8 @@ interface DbProduct {
 	pricing: Record<string, number>;
 	config_options: Record<string, unknown>;
 	sort_order: number;
+	currency: string | null;
+	server_type: string | null;
 }
 
 function buildFeatures(row: DbProduct): string[] {
@@ -36,7 +40,7 @@ async function fetchByGroup(groupName: string): Promise<DbProduct[]> {
 
 	try {
 		const { rows } = await pool.query<DbProduct>(
-			`SELECT p.id, p.name, p.description, p.product_type, p.pricing, p.config_options, p.sort_order
+			`SELECT p.id, p.name, p.description, p.product_type, p.pricing, p.config_options, p.sort_order, p.currency, p.server_type
 			 FROM products p
 			 JOIN product_groups pg ON p.product_group_id = pg.id
 			 WHERE pg.name = $1
@@ -53,38 +57,59 @@ async function fetchByGroup(groupName: string): Promise<DbProduct[]> {
 	}
 }
 
-export async function getSharedPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
-	const rows = await fetchByGroup('Shared Hosting');
-	return rows.map((row, index) => ({
+function toPlan(row: DbProduct, index: number, type: 'shared' | 'vps' | 'managed', locale: Locale): PricingPlan {
+	return {
 		name: row.name,
 		description: '',
 		priceEur: row.pricing.monthly ?? 0,
-		accent: index === 1,
-		cta: ctaLabel(locale, 'shared'),
+		priceCurrency: isCurrency(row.currency) ? row.currency : undefined,
+		accent: index === (type === 'shared' ? 1 : 0),
+		cta: ctaLabel(locale, type),
 		features: buildFeatures(row),
-	}));
+	};
+}
+
+export async function getSharedPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
+	const rows = await fetchByGroup('Shared Hosting');
+	return rows.map((row, i) => toPlan(row, i, 'shared', locale));
 }
 
 export async function getVpsPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
 	const rows = await fetchByGroup('VPS Hosting');
-	return rows.map((row, index) => ({
-		name: row.name,
-		description: '',
-		priceEur: row.pricing.monthly ?? 0,
-		accent: index === 0,
-		cta: ctaLabel(locale, 'vps'),
-		features: buildFeatures(row),
+	return Promise.all(rows.map(async (row, i) => {
+		const hz = row.server_type ? await getHetznerServerType(row.server_type) : undefined;
+		const features = hz
+			? [
+				`${hz.cores} vCPU ${hz.cpu_type === 'dedicated' ? 'Dedicated' : 'Shared'} ${hz.architecture.toUpperCase()}`,
+				`${hz.memory} GB RAM`,
+				`${hz.disk} GB NVMe SSD`,
+				'20 TB Transfer',
+				'1 IP dedicat',
+			]
+			: buildFeatures(row);
+		return {
+			name: row.name,
+			description: '',
+			priceEur: hz ? hz.priceMonthlyFinal : (row.pricing.monthly ?? 0),
+			accent: i === 0,
+			cta: ctaLabel(locale, 'vps'),
+			features,
+		};
 	}));
 }
 
+// Managed shared hosting plans (WooCommerce, ecommerce, etc.) — name does NOT contain "VPS"
 export async function getManagedPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
 	const rows = await fetchByGroup('Managed Hosting');
-	return rows.map((row, index) => ({
-		name: row.name,
-		description: '',
-		priceEur: row.pricing.monthly ?? 0,
-		accent: index === 0,
-		cta: ctaLabel(locale, 'managed'),
-		features: buildFeatures(row),
-	}));
+	return rows
+		.filter((row) => !/vps/i.test(row.name))
+		.map((row, i) => toPlan(row, i, 'managed', locale));
+}
+
+// Managed VPS plans — name contains "VPS"
+export async function getManagedVpsPlansFromDb(locale: Locale): Promise<PricingPlan[]> {
+	const rows = await fetchByGroup('Managed Hosting');
+	return rows
+		.filter((row) => /vps/i.test(row.name))
+		.map((row, i) => toPlan(row, i, 'managed', locale));
 }
