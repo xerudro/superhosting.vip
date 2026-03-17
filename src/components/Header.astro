@@ -124,9 +124,6 @@ const localeShortLabels = {
 								<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
 							</svg>
 						</button>
-					<a class="button button--primary nav__panel-cta" href={brand.controlPanelUrl} target="_blank" rel="noreferrer" aria-label="Open panel">
-							Open panel
-						</a>
 					</div>
 					<div class="nav__account">
 						{user ? (
@@ -137,6 +134,9 @@ const localeShortLabels = {
 								<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer" aria-label="Webmail">
 									Webmail
 								</a>
+								<a class="button button--primary nav__panel-cta" href={brand.controlPanelUrl} target="_blank" rel="noreferrer" aria-label="Open panel">
+									Open panel
+								</a>
 							</>
 						) : (
 							<>
@@ -145,6 +145,9 @@ const localeShortLabels = {
 								</a>
 								<a class="button button--secondary" href={brand.webmailUrl} target="_blank" rel="noreferrer" aria-label="Webmail">
 									Webmail
+								</a>
+								<a class="button button--primary nav__panel-cta" href={brand.controlPanelUrl} target="_blank" rel="noreferrer" aria-label="Open panel">
+									Open panel
 								</a>
 								<a class="button button--primary" href={withLocale(locale, '/register')} aria-label={content.nav.account[1].label}>
 									{content.nav.account[1].label}
