@@ -9,6 +9,7 @@ const locale = normalizeLocale(Astro.params.locale);
 const currency = Astro.locals.currency;
 const content = getPageContent(locale);
 const user = Astro.locals.user;
+const isAdmin = user?.email === import.meta.env.ADMIN_EMAIL;
 if (!user) {
 	return Astro.redirect(`/${locale}/login`);
 }
@@ -95,6 +96,9 @@ const labels = {
 					<div class="acct-actions">
 						<a class="button button--primary button--sm acct-btn" href={brand.controlPanelUrl} target="_blank" rel="noreferrer">{labels.panel}</a>
 						<a class="button button--secondary button--sm acct-btn" href={brand.webmailUrl} target="_blank" rel="noreferrer">{labels.webmail}</a>
+						{isAdmin && (
+							<a class="button button--secondary button--sm acct-btn" href={`/${locale}/admin`}>Admin</a>
+						)}
 						<form method="post" action="/api/session/logout" style="margin-top: 4px;">
 							<input type="hidden" name="locale" value={locale} />
 							<button class="button button--ghost button--sm acct-btn" type="submit">{labels.logout}</button>

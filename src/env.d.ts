@@ -3,6 +3,7 @@ declare namespace App {
 		locale: import('@/lib/i18n').Locale;
 		currency: import('@/lib/currency').Currency;
 		user: import('@/server/auth').SessionUser | null;
+		ronRate: number;
 	}
 }
 
@@ -16,6 +17,7 @@ interface ImportMetaEnv {
 	readonly CONTROL_PANEL_URL?: string;
 	readonly WEBMAIL_URL?: string;
 	readonly ALLOW_MOCK_DATA?: string;
+	readonly ADMIN_EMAIL?: string;
 }
 
 interface ImportMeta {

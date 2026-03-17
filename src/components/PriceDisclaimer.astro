@@ -1,0 +1,9 @@
+---
+const { locale } = Astro.props as { locale: import('@/lib/i18n').Locale };
+---
+
+{locale === 'ro' && (
+	<div class="price-disclaimer container">
+		<p><sup>*</sup> Toate prețurile sunt afișate în RON pentru claritate și predictibilitate. Tarifele sunt calculate pe baza costurilor operaționale în EUR și pot fi revizuite periodic în funcție de curs și costurile furnizorilor.</p>
+	</div>
+)}

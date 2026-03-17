@@ -27,6 +27,10 @@ const labels = {
 		websites: 'Website-uri',
 		message: 'Context proiect',
 		send: 'Trimite cererea',
+		chipPreset: 'Configurare preset + live',
+		chipManaged: 'Strat optional de administrare',
+		chipQuote: 'Oferta',
+		chipQuoteSub: 'Inregistrata ca cerere comerciala',
 	},
 	en: {
 		name: 'Name',
@@ -41,6 +45,10 @@ const labels = {
 		websites: 'Websites',
 		message: 'Project context',
 		send: 'Send request',
+		chipPreset: 'Preset + live configuration',
+		chipManaged: 'Optional operations layer',
+		chipQuote: 'Quote',
+		chipQuoteSub: 'Stored as commercial request',
 	},
 	de: {
 		name: 'Name',
@@ -55,6 +63,10 @@ const labels = {
 		websites: 'Websites',
 		message: 'Projektkontext',
 		send: 'Anfrage senden',
+		chipPreset: 'Preset + Live-Konfiguration',
+		chipManaged: 'Optionale Verwaltungsebene',
+		chipQuote: 'Angebot',
+		chipQuoteSub: 'Als Handelsanfrage gespeichert',
 	},
 }[locale];
 ---
@@ -68,9 +80,9 @@ const labels = {
 				<p>{description}</p>
 			</div>
 			<div class="summary-strip">
-				<div class="summary-chip"><strong>{type === 'shared-config' ? 'Shared' : 'VPS'}</strong><p>Preset + live configuration</p></div>
-				<div class="summary-chip"><strong>Managed</strong><p>Optional operations layer</p></div>
-				<div class="summary-chip"><strong>Quote</strong><p>Stored as commercial request</p></div>
+				<div class="summary-chip"><strong>{type === 'shared-config' ? 'Shared' : 'VPS'}</strong><p>{labels.chipPreset}</p></div>
+				<div class="summary-chip"><strong>Managed</strong><p>{labels.chipManaged}</p></div>
+				<div class="summary-chip"><strong>{labels.chipQuote}</strong><p>{labels.chipQuoteSub}</p></div>
 			</div>
 		</div>
 		<form class="card form-grid" method="post" action="/api/leads/request">

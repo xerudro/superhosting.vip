@@ -12,7 +12,7 @@ export const currencyByLocale: Record<CurrencyLocale, Currency> = {
 const rates: Record<Currency, number> = {
 	EUR: 1,
 	USD: 1.09,
-	RON: 4.97,
+	RON: 5.10,
 };
 
 const localesByCurrency: Record<Currency, string> = {
@@ -33,14 +33,24 @@ export function getCurrencyForLocale(locale: CurrencyLocale): Currency {
 	return currencyByLocale[locale] ?? defaultCurrency;
 }
 
-export function convertPrice(baseEur: number, currency: Currency): number {
-	return Number((baseEur * rates[currency]).toFixed(2));
+export function convertPrice(baseEur: number, currency: Currency, ronRate?: number): number {
+	const effectiveRates = ronRate ? { ...rates, RON: ronRate } : rates;
+	return Number((baseEur * effectiveRates[currency]).toFixed(2));
 }
 
-export function formatMoney(baseEur: number, currency: Currency) {
+export function formatMoney(baseEur: number, currency: Currency, ronRate?: number) {
 	return new Intl.NumberFormat(localesByCurrency[currency], {
 		style: 'currency',
 		currency,
 		maximumFractionDigits: currency === 'RON' ? 0 : 2,
-	}).format(convertPrice(baseEur, currency));
+	}).format(convertPrice(baseEur, currency, ronRate));
+}
+
+/** Format a price that is already in the target currency — no conversion. */
+export function formatMoneyRaw(amount: number, currency: Currency) {
+	return new Intl.NumberFormat(localesByCurrency[currency], {
+		style: 'currency',
+		currency,
+		maximumFractionDigits: currency === 'RON' ? 0 : 2,
+	}).format(amount);
 }

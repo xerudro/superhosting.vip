@@ -4,13 +4,21 @@ import FAQList from '@/components/FAQList.astro';
 import FeatureGrid from '@/components/FeatureGrid.astro';
 import HeroSection from '@/components/HeroSection.astro';
 import Layout from '@/components/Layout.astro';
+import PriceDisclaimer from '@/components/PriceDisclaimer.astro';
 import PricingCards from '@/components/PricingCards.astro';
-import { comparisonRowsByLocale, getFaq, getPageContent, getSharedPlans, getVpsPlans } from '@/lib/site';
+import { comparisonRowsByLocale, getFaq, getPageContent } from '@/lib/site';
 import { normalizeLocale, withLocale } from '@/lib/i18n';
+import { getSharedPlansFromDb, getVpsPlansFromDb, getManagedPlansFromDb } from '@/server/plans';
 
 const locale = normalizeLocale(Astro.params.locale);
 const currency = Astro.locals.currency;
 const content = getPageContent(locale);
+
+const [sharedPlans, vpsPlans, managedPlans] = await Promise.all([
+	getSharedPlansFromDb(locale),
+	getVpsPlansFromDb(locale),
+	getManagedPlansFromDb(locale),
+]);
 ---
 
 <Layout locale={locale} currency={currency} title={`${content.home.title} | VIP Super Hosting`} description={content.home.description} path={Astro.url.pathname} user={Astro.locals.user}>
@@ -23,9 +31,11 @@ const content = getPageContent(locale);
 		secondary={{ href: withLocale(locale, '/contact'), label: content.home.secondaryCta }}
 		stats={content.home.stats}
 	/>
-	<FeatureGrid eyebrow="Services" title={content.home.featureIntro} description={content.home.description} items={content.home.features} />
-	<PricingCards title="Shared hosting plans" description={content.shared.description} plans={getSharedPlans(locale)} currency={currency} />
-	<PricingCards title="VPS hosting plans" description={content.vps.description} plans={getVpsPlans(locale)} currency={currency} />
-	<ComparisonTable title="Choose the right platform" description="Compare the two service families before requesting a tailored recommendation." rows={comparisonRowsByLocale[locale]} />
-	<FAQList title="Frequently asked questions" description="Short answers for the most common commercial questions." items={getFaq(locale)} />
+	<FeatureGrid eyebrow={content.home.servicesEyebrow} title={content.home.featureIntro} description={content.home.description} items={content.home.features} />
+	<PricingCards title={content.shared.tiersTitle} description={content.shared.description} plans={sharedPlans} currency={currency} ronRate={Astro.locals.ronRate} />
+	<PricingCards title={content.vps.tiersTitle} description={content.vps.description} plans={vpsPlans} currency={currency} ronRate={Astro.locals.ronRate} />
+	<PricingCards title={content.shared.managedTitle} description={content.managed.description} plans={managedPlans} currency={currency} ronRate={Astro.locals.ronRate} />
+	<ComparisonTable title={content.home.comparisonTitle} description={content.home.comparisonDescription} rows={comparisonRowsByLocale[locale]} />
+	<FAQList title={content.home.faqTitle} description={content.home.faqDescription} items={getFaq(locale)} />
+	<PriceDisclaimer locale={locale} />
 </Layout>
