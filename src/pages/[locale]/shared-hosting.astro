@@ -3,12 +3,17 @@ import Configurator from '@/components/Configurator.astro';
 import FeatureGrid from '@/components/FeatureGrid.astro';
 import Layout from '@/components/Layout.astro';
 import PricingCards from '@/components/PricingCards.astro';
-import { getPageContent, getServiceFeatures, getSharedPlans } from '@/lib/site';
+import { getPageContent, getServiceFeatures } from '@/lib/site';
 import { normalizeLocale } from '@/lib/i18n';
+import { getSharedPlansFromDb, getManagedPlansFromDb } from '@/server/plans';
 
 const locale = normalizeLocale(Astro.params.locale);
 const currency = Astro.locals.currency;
 const content = getPageContent(locale);
+const [sharedPlans, managedPlans] = await Promise.all([
+	getSharedPlansFromDb(locale),
+	getManagedPlansFromDb(locale),
+]);
 ---
 
 <Layout locale={locale} currency={currency} title={`${content.shared.title} | VIP Super Hosting`} description={content.shared.description} path={Astro.url.pathname} user={Astro.locals.user}>
@@ -26,7 +31,8 @@ const content = getPageContent(locale);
 			</div>
 		</div>
 	</section>
-	<FeatureGrid title="Shared hosting built for calm operations" description={content.shared.description} items={getServiceFeatures(locale).shared} />
-	<PricingCards title="Preset shared hosting tiers" description="Start from a clean baseline, then switch to custom requirements when needed." plans={getSharedPlans(locale)} currency={currency} anchor="plans" />
-	<Configurator id="configurator" title="Need a custom shared hosting quote?" description="Tune the core parameters and send the requirement summary to our team." type="shared-config" locale={locale} />
+	<FeatureGrid title={content.shared.featureTitle} description={content.shared.description} items={getServiceFeatures(locale).shared} />
+	<PricingCards title={content.shared.tiersTitle} description={content.shared.tiersDescription} plans={sharedPlans} currency={currency} anchor="plans" />
+	<PricingCards title={content.shared.managedTitle} description={content.managed.description} plans={managedPlans} currency={currency} />
+	<Configurator id="configurator" title={content.shared.configuratorTitle} description={content.shared.configuratorDescription} type="shared-config" locale={locale} />
 </Layout>

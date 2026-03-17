@@ -3,12 +3,14 @@ import Configurator from '@/components/Configurator.astro';
 import FeatureGrid from '@/components/FeatureGrid.astro';
 import Layout from '@/components/Layout.astro';
 import PricingCards from '@/components/PricingCards.astro';
-import { getPageContent, getServiceFeatures, getVpsPlans } from '@/lib/site';
+import { getPageContent, getServiceFeatures } from '@/lib/site';
 import { normalizeLocale } from '@/lib/i18n';
+import { getVpsPlansFromDb } from '@/server/plans';
 
 const locale = normalizeLocale(Astro.params.locale);
 const currency = Astro.locals.currency;
 const content = getPageContent(locale);
+const vpsPlans = await getVpsPlansFromDb(locale);
 ---
 
 <Layout locale={locale} currency={currency} title={`${content.vps.title} | VIP Super Hosting`} description={content.vps.description} path={Astro.url.pathname} user={Astro.locals.user}>
@@ -26,7 +28,7 @@ const content = getPageContent(locale);
 			</div>
 		</div>
 	</section>
-	<FeatureGrid title="Control and flexibility without public provider noise" description={content.vps.description} items={getServiceFeatures(locale).vps} />
-	<PricingCards title="Preset VPS tiers" description="Build from proven starting points, then request a tuned quote for your workload." plans={getVpsPlans(locale)} currency={currency} anchor="plans" />
-	<Configurator id="configurator" title="Build a tailored VPS request" description="Adjust the technical parameters and send the request summary for review." type="vps-config" locale={locale} />
+	<FeatureGrid title={content.vps.featureTitle} description={content.vps.description} items={getServiceFeatures(locale).vps} />
+	<PricingCards title={content.vps.tiersTitle} description={content.vps.tiersDescription} plans={vpsPlans} currency={currency} anchor="plans" />
+	<Configurator id="configurator" title={content.vps.configuratorTitle} description={content.vps.configuratorDescription} type="vps-config" locale={locale} />
 </Layout>

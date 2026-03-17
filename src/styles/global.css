@@ -309,12 +309,15 @@ button.button {
 	display: grid;
 	grid-template-columns: 1fr 360px;
 	gap: 56px;
-	align-items: center;
+	align-items: stretch;
 }
 
 .hero__content {
-	display: grid;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 	gap: 28px;
+	padding: 32px;
 }
 
 .hero__intro {

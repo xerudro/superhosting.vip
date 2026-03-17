@@ -1,5 +1,5 @@
 ---
-import { formatMoney } from '@/lib/currency';
+import { formatMoney, formatMoneyRaw } from '@/lib/currency';
 
 const { title, description, plans, currency, anchor } = Astro.props as {
 	title: string;
@@ -22,7 +22,7 @@ const { title, description, plans, currency, anchor } = Astro.props as {
 					<span class="badge">{plan.name}</span>
 					<p>{plan.description}</p>
 					<div class="pricing-card__price">
-						<span class="price-number">{formatMoney(plan.priceEur, currency)}</span>
+						<span class="price-number">{plan.priceCurrency ? formatMoneyRaw(plan.priceEur, plan.priceCurrency) : formatMoney(plan.priceEur, currency)}</span>
 						<span class="price-suffix">/mo</span>
 					</div>
 					<ul class="list-clean">

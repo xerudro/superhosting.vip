@@ -7,6 +7,7 @@ export type PricingPlan = {
 	name: string;
 	description: string;
 	priceEur: number;
+	priceCurrency?: import('@/lib/currency').Currency;
 	accent?: boolean;
 	cta: string;
 	features: readonly string[];
@@ -100,6 +101,10 @@ export const pageContent = {
 				{ question: 'Ati inclus si design web?', answer: 'Da, oferim si servicii de web design si optimizare UX pentru lansari complete.' },
 			],
 		},
+		managed: {
+			title: 'Managed Hosting pentru proiecte care cer stabilitate si administrare inclusa',
+			description: 'Pachete hosting si VPS administrate complet, cu backup zilnic, suport prioritar si operare tehnica inclusa.',
+		},
 		shared: {
 			title: 'Shared Hosting pentru site-uri business care cer stabilitate si suport rapid',
 			description: 'Pachete presetate sau configurabile, disponibile managed sau unmanaged, cu accent pe performanta si timp de raspuns bun.',
@@ -108,6 +113,12 @@ export const pageContent = {
 				'Cache si optimizari gandite pentru website-uri rapide',
 				'Optiune de administrare inclusa pentru echipe fara sysadmin intern',
 			],
+			featureTitle: 'Hosting shared construit pentru operare lina',
+			tiersTitle: 'Pachete shared hosting presetate',
+			tiersDescription: 'Pornesti dintr-un baseline curat, cu optiunea de a trece la cerinte custom oricand.',
+			managedTitle: 'Planuri managed hosting',
+			configuratorTitle: 'Ai nevoie de un shared hosting personalizat?',
+			configuratorDescription: 'Trimite-ne parametrii de baza si revenim cu o oferta adaptata echipei tale.',
 		},
 		vps: {
 			title: 'VPS Hosting pentru aplicatii, magazine si infrastructura care cere control real',
@@ -117,6 +128,11 @@ export const pageContent = {
 				'Configurator live pentru nevoi custom',
 				'Managed si unmanaged in functie de nivelul de control dorit',
 			],
+			featureTitle: 'Control si flexibilitate fara zgomotul unui provider public',
+			tiersTitle: 'Pachete VPS presetate',
+			tiersDescription: 'Pornesti dintr-un punct verificat si solicitati o configuratie adaptata workload-ului vostru.',
+			configuratorTitle: 'Construieste o cerere VPS personalizata',
+			configuratorDescription: 'Ajusteaza parametrii tehnici si trimite rezumatul cererii pentru analiza.',
 		},
 		admin: {
 			title: 'Administrare servere pentru update-uri, hardening si performanta continua',
@@ -186,6 +202,10 @@ export const pageContent = {
 				{ question: 'Do you also handle website design?', answer: 'Yes. We offer web design and UX improvements for end-to-end launches.' },
 			],
 		},
+		managed: {
+			title: 'Managed Hosting for projects that need stability and full administration',
+			description: 'Fully managed hosting and VPS packages with daily backups, priority support and included technical operations.',
+		},
 		shared: {
 			title: 'Shared Hosting for business websites that need stability and responsive support',
 			description: 'Preset or configurable packages, available as managed or unmanaged, with an emphasis on performance and clear operations.',
@@ -194,6 +214,12 @@ export const pageContent = {
 				'Caching and optimizations for fast websites',
 				'Managed administration for teams without an in-house sysadmin',
 			],
+			featureTitle: 'Shared hosting built for calm operations',
+			tiersTitle: 'Preset shared hosting tiers',
+			tiersDescription: 'Start from a clean baseline, then switch to custom requirements when needed.',
+			managedTitle: 'Managed hosting plans',
+			configuratorTitle: 'Need a custom shared hosting quote?',
+			configuratorDescription: 'Tune the core parameters and send the requirement summary to our team.',
 		},
 		vps: {
 			title: 'VPS Hosting for apps, stores and infrastructure that require real control',
@@ -203,6 +229,11 @@ export const pageContent = {
 				'Live configurator for custom workloads',
 				'Managed or unmanaged according to the level of control you need',
 			],
+			featureTitle: 'Control and flexibility without public provider noise',
+			tiersTitle: 'Preset VPS tiers',
+			tiersDescription: 'Build from proven starting points, then request a tuned quote for your workload.',
+			configuratorTitle: 'Build a tailored VPS request',
+			configuratorDescription: 'Adjust the technical parameters and send the request summary for review.',
 		},
 		admin: {
 			title: 'Server administration for updates, hardening and ongoing performance',
@@ -272,6 +303,10 @@ export const pageContent = {
 				{ question: 'Ubernehmen Sie auch Web Design?', answer: 'Ja. Fur Kunden mit Komplettbedarf bieten wir Web Design und UX-Optimierung an.' },
 			],
 		},
+		managed: {
+			title: 'Managed Hosting fur Projekte mit Fokus auf Stabilitat und vollstandiger Verwaltung',
+			description: 'Vollstandig verwaltete Hosting- und VPS-Pakete mit taglichen Backups, priorisiertem Support und technischem Betrieb inklusive.',
+		},
 		shared: {
 			title: 'Shared Hosting fur Business-Websites mit Fokus auf Stabilitat und schnellen Support',
 			description: 'Vordefinierte oder konfigurierbare Pakete, managed oder unmanaged, mit Fokus auf Performance und sauberen Betrieb.',
@@ -280,6 +315,12 @@ export const pageContent = {
 				'Caching und Optimierungen fur schnelle Websites',
 				'Managed-Verwaltung fur Teams ohne eigenen Sysadmin',
 			],
+			featureTitle: 'Shared Hosting fur ruhigen Betrieb',
+			tiersTitle: 'Vordefinierte Shared-Hosting-Pakete',
+			tiersDescription: 'Starten Sie mit einer sauberen Basis und wechseln Sie bei Bedarf zu individuellen Anforderungen.',
+			managedTitle: 'Managed-Hosting-Pakete',
+			configuratorTitle: 'Benotigen Sie ein individuelles Shared-Hosting-Angebot?',
+			configuratorDescription: 'Passen Sie die Kernparameter an und senden Sie die Zusammenfassung an unser Team.',
 		},
 		vps: {
 			title: 'VPS Hosting fur Anwendungen, Shops und Infrastruktur mit echtem Kontrollbedarf',
@@ -289,6 +330,11 @@ export const pageContent = {
 				'Live-Konfigurator fur individuelle Anforderungen',
 				'Managed oder unmanaged je nach gewunschtem Kontrollgrad',
 			],
+			featureTitle: 'Kontrolle und Flexibilitat ohne den Larm offentlicher Anbieter',
+			tiersTitle: 'Vordefinierte VPS-Pakete',
+			tiersDescription: 'Starten Sie von bewahrten Ausgangspunkten und fordern Sie ein angepasstes Angebot an.',
+			configuratorTitle: 'Erstellen Sie eine individuelle VPS-Anfrage',
+			configuratorDescription: 'Passen Sie die technischen Parameter an und senden Sie die Anfragezusammenfassung zur Prufung.',
 		},
 		admin: {
 			title: 'Serververwaltung fur Updates, Hardening und nachhaltige Performance',
