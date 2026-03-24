@@ -22,7 +22,18 @@
       "Bash(powershell -Command \"Stop-Process -Id 11004,23076,24776,24516,7632,24280 -Force -ErrorAction SilentlyContinue; Write-Host ''done''\")",
       "Bash(node -e \":*)",
       "Bash(npm install:*)",
-      "Bash(find /d/WEBSITE/superhosting.vip/src/components -name *.astro)"
+      "Bash(find /d/WEBSITE/superhosting.vip/src/components -name *.astro)",
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(ls \"D:\\\\WEBSITE\\\\superhosting.vip\\\\.claude\\\\worktrees\\\\priceless-napier\"/.env*)",
+      "Bash(ls \"D:\\\\WEBSITE\\\\superhosting.vip\"/.env*)",
+      "Bash(where npm:*)",
+      "Bash(taskkill /PID 15608 /F)",
+      "Bash(taskkill /PID 22780 /F)",
+      "Bash(cmd /c \"taskkill /PID 15608 /F & taskkill /PID 22780 /F\")",
+      "Bash(grep -rn \"Panel\\\\|Webmail\\\\|webmail\\\\|controlPanel\\\\|Open Panel\" \"D:\\\\WEBSITE\\\\superhosting.vip\\\\.claude\\\\worktrees\\\\priceless-napier\\\\src\\\\components\"\" --include=\"*.astro \" -l)",
+      "Bash(python3 -:*)",
+      "Bash(\"C:/Program Files/Git/bin/bash.exe\" -c \"echo ''Git Bash works! Shell: $BASH_VERSION''\")"
     ]
   }
 }
