@@ -13,11 +13,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^10.0.1",
+    "@astrojs/node": "^11.0.2",
     "@astrojs/sitemap": "^3.7.1",
     "@fontsource/manrope": "^5.2.8",
     "@fontsource/sora": "^5.2.8",
-    "astro": "^6.0.4",
+    "astro": "^7.0.6",
     "bcryptjs": "^3.0.3",
     "pg": "^8.20.0",
     "zod": "^4.3.6"
